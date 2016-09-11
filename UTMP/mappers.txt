@@ -1,0 +1,160 @@
+﻿#mappers' aliases for ""other maps by"" feature
+#
+#epic / unreal / ut99
+Elliot=Elliot 'Myscha' Cannon
+Myscha the sled dog=Elliot 'Myscha' Cannon
+Myscha=Elliot 'Myscha' Cannon
+Inoxx=Cedric 'Inoxx' Fiorentino
+Eenocks=Cedric 'Inoxx' Fiorentino
+||Cedric||=Cedric 'Inoxx' Fiorentino
+||Cliff||=Cliff Bleszinski
+XceptOne=Juan Pancho 'XceptOne' Eekels
+Xcept One=Juan Pancho 'XceptOne' Eekels
+Juan Pancho Eekels=Juan Pancho 'XceptOne' Eekels
+Jeremy War
+Shane Caudle
+Talisman=Alan 'Talisman' Willard
+Alan Willard=Alan 'Talisman' Willard
+Dave Ewing
+Clawfist=Sidney 'Clawfist' Rauchberger
+||Eric||=Eric 'Ebolt' Boltjes
+Rich 'Akuma' Eastwood
+Warren Marshall
+#community
+#  ONP
+David Münnich=David 'DavidM' Münnich
+DavidM=David 'DavidM' Münnich
+El Chicoverde=Jean 'Chico' Rochefort
+Hyperion=Emil 'Hyperion' Attlid
+MClane=Daniel 'MClane' Pflugbeil
+Tonnberry=Paul 'Tonnberry' Fahss
+Heiko Dreyer=Heiko 'sm0k3r' Dreyer
+Hourences=Sjoerd 'Hourences' De Jong
+MClane=Daniel 'MClane' Pflugbeil
+Arjan Vroegop=Arjan "Atje" Vroegop 
+Atje=Arjan "Atje" Vroegop 
+Florian 'Strogg' Oswald
+
+MoldyToe
+FraGnBraG=Rob -=FraGnBraG=- Burns
+Raylen
+CouilleNoire
+{NYA}Mike=NYA-Mike
+|ZM|Mike=NYA-Mike
+Shinox//Destiny=Shinox & Destiny
+Shinox///Destiny=Shinox & Destiny
+Luv_Studd
+Steve Keene=Luv_Studd
+DarkMantis
+Memsys
+Alejandro Llados=Alejandro Llados alias THUNDERBOLT
+THUNDERBOLT=Alejandro Llados alias THUNDERBOLT
+Creavion
+Sylvain
+R@dius
+Jimbo=[HTD]_Jimbo
+l2at-l3astard=|2at-|3astard
+|2at |2astard=|2at-|3astard
+Boom-Boy
+Terraniux
+Cygma-N
+blito3
+blito4
+Derdak2rot=Cedric "Derdak2rot" Pierron
+Vatcilli=Vatcilli Zeitchef
+||Mark||=Mark "OZ" Austin
+Da_BeAsT
+NuLL
+DawnKnight=Dawn Knight
+||eko||
+[UTW]R@m$e$
+Britton Wesley=Britton 'Ghandi' Wesley
+Zencoder=Britton 'Ghandi' Wesley
+(ASC)Lothar_Fuffzyn
+{MHM}SuPreMe
+HellFire={MHM}HellFire`
+K'rool
+FluffyPower
+Kimmo
+Hobi-Wan
+Warlord
+Walm
+MarkusW=Walm
+David Brown
+MonsterMaster
+Tentacle-HunteR
+Splashy
+XYZ 8000
+DoDo=DoDo_De4dB1rdY
+LeaderX
+Kenneth
+Jinpachi
+SureShot=Jeremy 'SureShot' Whiting
+Common
+DoctoR DeatH=DoctoR_DeatH
+{SUF}Skull_skewer
+Tleilaxu
+Voxel
+Loki=L'Oki
+The Roel-R
+PsychoP@t
+Hitman
+Lothar Fuffzyn=(ASC)Lothar_Fuffzyn
+The_Gunslinger|DFB|
+{S.o.W}DeathMask
+{SUF}Skullskewer={SUF}Skull_skewer
+Cardiologist=Kimmo "Cardiologist" Kontto
+||Slain||
+||Crazy||
+Lotus
+X-Raided
+The|CRAZY|Dane=TheDane
+K!llRoy=Patrick 'K!llRoy' Buijs
+c@pp@s
+FormStranger
+<lol>BK=Bob Kuphal aka <lol>BK
+MattMan={dFb}MattMan
+Ninja_Pirate
+_R_A_F_F_
+Whitey
+{DSI}Anghellic
+~>)SiR:TrOgLoDyTe(<~
+scruffy23=dU.Scruffy
+Mouse@destinationunreal.com=dU.Mouse
+GoldenGirl=[GG]Sackless
+||Denise||=[GG]Sackless
+Anarchist
+[xcep]My_Ass
+Pawel
+|3arcode=BarCode
+]POT[ The One=]POT[TheOne
+]POT[ TheOne=]POT[TheOne
+||Sai||
+zeal
+Vatcilli
+KillRoy=Patrick 'KillRoy' Buijs
+Plutonic=Chris 'Plutonic' Blundell
+ReMoRsELeSs
+Fastbak
+Ulukai=Gareth 'Ulukai' Spring
+Alchemist
+Blitzy
+Dremoan=Dustin (Dremoan) Fair
+{Xm}Ice_Hawk
+Firefly.
+Spatieman=(_@_)_Spatieman
+ion foyle snarkch
+Cyberia-Mix
+<GF>-REX!!
+War Master
+Jeff Randall=Jeff "Monger" Randall
+Blackwolf=dU.BlackWolf
+BW)=dU.BlackWolf
+Scorpion=UK-Scorpion
+nekoneko=nekoneko=[SAK]=
+Tu_Vas_Souffrir
+||Dustin||
+[VSK]AssWaxer
+JoMaX
+RJGexplode
+Revelation

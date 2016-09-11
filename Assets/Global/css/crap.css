@@ -1,0 +1,815 @@
+﻿/* CRAP CSS Template
+ * For use in my all projects that don't have a special CSS
+ * I grant permission for you to steal this without my permission.
+ * 
+ * 2009 NaMONaKi15
+ */
+
+/* common */
+body{font-family: segoe ui,arial,sans-serif; font-size: 9pt;}div[align=center]{visibility:hidden !important;}
+big{font-size:16pt;}
+small{font-size:8pt;}
+a,a:visited{color: #2244FF; text-decoration:none;}
+a.ninja,a.ninja:visited,a.ninja:active{color: #000;text-decoration:none;}
+a:hover{text-decoration:underline;}
+p{font-size: 10pt;}
+q{font-size: 12pt;font-style:italic;}
+.go_lynx{text-align:center;}
+.go_4shared{text-align:right;}
+.go_hole img, .go_lynx img, .go_4shared img{width:16px; height:16px;}
+.table{width: 100%; font-size:10pt;}
+table.kurwen{margin: 10px 10px;font-size: 10pt;}
+.clear{clear:both;}
+::selection{background: #2244FF; color:#FFF;}::-moz-selection{background: #2244FF; color:#FFF;}
+/* common dark */
+body.dark{background-color:#000001; color: white;}
+body.dark small.copysrajt,.copysright{color:#333; position: fixed; bottom: 0;right:0;}
+body.dark a.ninja,body.dark a.ninja:visited,body.dark a.ninja:active{color: #fff;}
+body.dark a,body.dark a:visited{color: #88CCFF;}
+body.dark *::selection{background: #88CCFF; color:#000;}body.dark *::-moz-selection{background: #88CCFF; color:#000;}
+body.dark table,body.dark .opatablestyle,body.dark pre{border: 1px solid #888;}
+body.dark th a{color: #999;}
+body.dark tbody tr:hover {background: #012; }
+body.dark thead,body.dark tfoot{background: #444;}
+/* common rage */
+body.rage a,body.rage a:visited{color: #FF8040;}
+body.rage *::selection{color: #410; background:#FF8040;}body.rage *::-moz-selection{color: #410; background:#FF8040;}
+body.rage tbody tr:hover {background: #210; }
+body.rage thead,body.rage tfoot{background: #410;}
+/* common calm */
+body.calm a,body.calm a:visited{color: #40FF80;}
+body.calm *::selection{color: #062; background:#FF40FF;}body.calm *::-moz-selection{color: #062; background:#FF40FF;}
+body.calm tbody tr:hover {background: #403; }
+body.calm thead,body.calm tfoot{background: #616;}
+
+/* n14purple */
+
+body.n14purple a,body.n14purple a:visited{color: #6032B9;}
+body.n14purple *::selection{color: #FFF; background:#6032B9;}body.n14purple *::-moz-selection{color: #FFF; background:#6032B9;}
+body.n14purple tbody tr:hover {background: #C4B5E0; }
+body.n14purple thead,body.n14purple tfoot{background: #936DDC;}
+
+
+/* 
+	Crappy: Material Design Impostor 
+	Remove the semicolon above
+*/
+
+body.crappyMaterialImpostor{
+	background: #DDD;
+	margin: 0;
+	font-family: Segoe UI; /* no googol font, googol font ugly!! */
+}
+
+@media screen and (max-width:400px){
+	.crappyMaterialImpostor #body_cont{
+		
+	}
+}
+
+.crappyMaterialImpostor #body_cont>section {
+	border: 1px solid #CCC;
+	/* nice shadow generator: http://www.cssmatic.com/box-shadow */
+	-webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.25);
+	-moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.25);
+	box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.25);
+	border-radius: 3px;
+	background: #fff;
+	margin: 20px 0;
+	overflow: hidden;
+}
+.crappyMaterialImpostor #body_cont>section > * {
+	margin: 10px;
+}
+
+.crappyMaterialImpostor #body_cont>section > h1 {
+	/*background: #6032B9;*/
+	margin: 0px;
+	padding: 10px;
+	color: #6032B9;
+}
+
+.crappyMaterialImpostor #body_cont>section > table.huge{
+	width: 100%;
+	border: 0;
+	margin: 10px 0 20px 0 !important;
+	
+}
+.crappyMaterialImpostor #body_cont>section > table.huge caption{
+	font-size: 12pt;
+	text-align: left;
+	margin: 5px 10px;
+}
+
+.crappyMaterialImpostor #body_cont>section > table.huge thead{
+	background: none;
+}
+.crappyMaterialImpostor #body_cont>section > table.huge thead tr {
+	border-bottom: 2px solid #CCC;
+	height: 30px;
+}
+
+.crappyMaterialImpostor #body_cont>section > table.huge thead{
+	font-size: 11pt;
+} 
+
+.crappyMaterialImpostor #body_cont>section > table.huge tr {
+	border-bottom: 1px solid #DDD;
+}
+
+.crappyMaterialImpostor #body_cont>section > table.huge tr > * {
+	text-align: left;
+	padding: 0 10px;
+	height: 25px;
+}
+
+.crappyMaterialImpostor #body_cont>section > table.huge:last-child{
+	margin-bottom: 0 !important;
+}
+
+.crappyMaterialImpostor #body_cont>section > hr{
+	border: 2px solid #AAA;
+	margin: 10px 0 !important;
+}
+
+.crappyMaterialImpostor img.blocky{
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+/* N14Core */
+
+#AppLogo{
+	margin: 0 auto !important;
+	display: block;
+	max-height: 120px;
+}
+
+.n14corelogo{
+	height: 30px;
+}
+
+
+@media screen and (max-width:400px){
+	.crappyMaterialImpostor #body_cont>section > table.collapseToFirst td,
+	.crappyMaterialImpostor #body_cont>section > table.collapseToFirst th{
+		display:none;
+	}
+	.crappyMaterialImpostor #body_cont>section > table.collapseToFirst td:first-child,
+	.crappyMaterialImpostor #body_cont>section > table.collapseToFirst th:first-child{
+		display:table-cell;
+	}
+}
+#n14coreLamePos{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+#n14coreLamePos.hidden{
+	/*display: none;*/
+	z-index: -100;
+	opacity: 0.001;
+}
+#n14coreLameWS{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	overflow: hidden;
+	background: rgba(0,0,0,0.7);
+}
+
+
+/* '12 crap framework */
+.LOLHIDE{display:none!important}
+/* '11 NemoFileLister */
+#options{display: table; width: 960px;table-layout:fixed;}
+#options a{display: table-cell;width:100px;}
+#dsc_index,#body_cont{max-width: 960px; margin: 0 auto;}
+table,.opatablestyle,pre{border: 1px solid #000; margin: 10px auto;display:table; border-spacing: 0px; border-collapse: collapse; }
+pre,.pre,code.snippet{white-space: pre-wrap;}
+code.snippet{display:inline-block; border: 1px solid #FFF;height: 200px;overflow-y: scroll; width: 45%;}
+th,td{padding: 2px;}
+thead,tfoot{background: #DDD; font-weight: bold;}
+tbody tr:hover {background: #EFF; }
+tr:hover .hoverhide{visibility: visible !important;}
+.dicon{text-align:center; width: 30px;}
+.dsize{width: 105px;}
+.ddate{width: 105px;}
+.hoverhide{ visibility:hidden; font-size: 8pt;}
+.hoverhide a{color: #4488FF;}
+img.scale{max-height:300px;}
+.del{opacity: 0.4;}
+th.dname{text-align:left;}
+th a{color: #000;}
+
+/* '10 samp */
+table.can{text-align:center}
+table.can img{max-width:500px;}
+table.can tr{border: 1px solid #000;}
+.can .hd {font-weight:bold;}
+
+/* '13 ut tracker */
+#uttrk h2{padding: 10px 0px;}
+#uttrk .uttr_skin{border:1px solid black;width:64px;height:64px;display:inline-block; overflow:hidden;text-overflow:ellipsis; font-size: 7pt;}
+#uttrk .uttr_skin.unknown{background: url(../skins/unkn_skin.jpg); background-size: contain;}
+#uttrk .imgleft{float:left; margin-right: 8px;}
+#uttrk table{width:auto;}
+#uttrk table.light{padding: 5px; border:none;}
+#uttrk table.huge{width:100%;}
+#uttrk table.semihuge{width:50%;}
+#uttrk table small{font-size:7pt;}
+#uttrk table caption{font-size: 10pt; font-weight: bold; text-align: left; margin: 3px 0;}
+/*#uttrk table#masterlist {table-layout: fixed;}
+#uttrk table#masterlist .mlrow{height:30px;}
+#uttrk table#masterlist .mlname{width:60%;}
+#uttrk table#masterlist .mlcpl{width:6%; text-align:center;}
+#uttrk table#masterlist .mlcm{width:18%;}
+#uttrk table#masterlist .mlrf{width:4%; text-align:center;}
+#uttrk table#masterlist .mlip{width:12%;}
+#uttrk table#masterlist .mlcpl_full{color: #666;}
+#uttrk table#masterlist .mlcpl_openslots{color: #0C4;}
+#uttrk table#masterlist .mlcpl_numplayers{font-size:10pt;}
+#uttrk table#masterlist .mlcpl_maxplayers{font-size:7pt;}*/
+#uttrk #mlServerFilter .notselected {opacity: 0.5;}
+#uttrk #mlServerFilter .selected {border: 1px solid #333;border-radius: 3px;background: #111;}
+#uttrk table#masterlist {table-layout: fixed;}
+#uttrk table#masterlist .mlrow{height:30px;}
+#uttrk table#masterlist .mltype{width:5%;text-align:center;}
+#uttrk table#masterlist td.mltype{font-size: 8pt; color: #999;}
+#uttrk table#masterlist .mlname{width:55%;}
+#uttrk table#masterlist .mlname .mlextended{display:block; font-size: 8pt; color: #888;}
+#uttrk table#masterlist .mlcpl{width:7%; text-align:center;}
+#uttrk table#masterlist .mlcm{width:15%; font-size: 9pt;}
+#uttrk table#masterlist .mlrf{width:4%; text-align:center;}
+#uttrk table#masterlist .mlip{width:14%; font-size: 8pt;}
+#uttrk table#masterlist .mlip .mlic{display: inline-block; width: 19px; text-align: center;}
+#uttrk table#masterlist .mlcpl_full{color: #A12;}
+#uttrk table#masterlist .mlcpl_almostfull{color: #9A4;}
+#uttrk table#masterlist .mlcpl_openslots{color: #0C4;}
+#uttrk table#masterlist .mlcpl_numplayers{font-size:10pt;}
+#uttrk table#masterlist .mlcpl_maxplayers{font-size:7pt;}
+#uttrk table#commongames .pfrow{height:50px;}
+#uttrk table#commongames .pfname{font-size:12pt;}
+#uttrk table#pservers .srow {height: 25px;}
+#uttrk input{border: 1px solid #999; font-size: 8pt;}
+#uttrk input::-webkit-input-placeholder{ color: #888;}
+#uttrk input::-moz-placeholder{ color: #888;}
+#uttrk input:-ms-input-placeholder{ color: #888;}
+#uttrk input::placeholder{ color: #888;}
+#uttrk input[type=submit]{cursor: pointer;}
+#uttrk #wybieralkaJezykow{float: right; opacity: 0.5; transition: opacity 0.5s;font-size: 8pt;text-align: right;}
+#uttrk #wybieralkaJezykow:hover{opacity: 1;}
+#uttrk #wybieralkaJezykow #transCaption{font-size: 6pt;}
+#uttrk .mappreview,
+#uttrk .mapinfo {
+  display: table-cell;
+}
+#uttrk .mappreview {
+  padding-right: 10px;
+  text-align: center;
+}
+#uttrk .mappreview img.mapimage {
+  max-width: 160px;
+  vertical-align: top;
+}
+#uttrk .mappreview a.maplink {
+  font-size: 10pt;
+}
+#uttrk .mapinfo {
+  width: 100%;
+}
+#uttrk .maplayout img {
+  max-width: 920px;
+}
+#uttrk .mapdl {
+  font-size: 16pt;
+  font-weight: bold;
+}
+#uttrk .record{
+	font-size: 8pt;
+}
+
+#uttrk .record .recordTime{
+	font-size: 10pt;
+}
+#uttrk .record .recordTime b{
+	font-size: 12pt;
+}
+#uttrk .record a.recordBy{
+	font-size: 11pt;
+}
+#uttrk .record .recordSrc{
+	font-size: 8pt;
+}
+
+#uttrk .remainingTime,#uttrk .elapsedTime {
+	border: 1px solid #000;
+	background: #222;
+	width: 118px;
+	height: 16px;
+	display: inline-block;
+	position: relative;
+}
+#uttrk .remainingTime.overtime{
+	background: #300;
+}
+
+#uttrk .remainingTimeBar{
+	background: -webkit-linear-gradient(left, #400000 0px, #802000 60px, #A09000 120px);
+	background: linear-gradient(to right, #400000 0px, #802000 60px, #A09000 120px);
+	height: 16px;
+	display: inline-block;
+}
+
+#uttrk .remainingTimeString, #uttrk .elapsedTimeString{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	font-size: 8pt;
+	vertical-align: top;
+	text-shadow: 0px 0px 4px #000, 1px 1px 1px #000, 1px -1px 1px #000, -1px 1px 1px #000, -1px -1px 1px #000;  
+	padding: 1px;
+	
+}
+
+#uttrk img.icon {
+	vertical-align: middle;
+}
+#uttrk .overtime .remainingTimeBar{
+	background: none;
+}
+#uttrk .scAddz { font-size: 9pt;}
+#uttrk table#servonline th{font-size: 16pt;}
+#uttrk table#servonline .soskin{width: 36px; text-align:center;font-size: 7pt; color: #999;}
+#uttrk table#servonline .soname{width: 200px;}
+#uttrk table#servonline .soscore{width: 50px; text-align:center;}
+#uttrk table#servonline .soscore .sofphState{font-size: 8pt; display: block}
+#uttrk table#servonline td.soname,td.soscore{font-size: 12pt;}
+#uttrk table#servonline .sotime{width: 40px;}
+#uttrk table#servonline .soskin .uttr_skin{width: 32px; height: 32px; background-size: 32px 32px;}
+
+
+.tbred {
+  background: #330000 !important;
+}
+.tbblue {
+  background: #121240 !important;
+}
+.tbgreen {
+  background: #003300 !important;
+}
+.tbgold {
+  background: #331600 !important;
+}
+.tbgray {
+  background: #222222 !important;
+}
+.tcheader{
+	position: relative;
+}
+.tcteamname, .tcteamscore{
+	z-index: 1;
+	position:relative;
+}
+.tcred {
+  background: #800000 !important;
+}
+.tcblue {
+  background: #23237c !important;
+}
+.tcgreen {
+  background: #008000 !important;
+}
+.tcgold {
+  background: #803700 !important;
+}
+.tcgray {
+  background: #484848 !important;
+}
+.tcsiegered {
+  background: #200000 !important;
+}
+.tcsiegeblue {
+  background: #08081c !important;
+}
+.tcsiegegreen {
+  background: #002000 !important;
+}
+.tcsiegegold {
+  background: #240f00 !important;
+}
+.tcsiegegray {
+  background: #171717 !important;
+}
+.tcsiegewunderbar{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	z-index: 0;
+}
+.tcsiegecorelabel{
+	display: block;
+	position: absolute;
+	right: 5px;
+	font-size: 8pt;
+	bottom: 7px;
+}
+.spec-list {
+  font-size: 12pt;
+  text-align: center;
+}
+
+.spec-list{font-size:12pt; text-align:center;}
+
+#uttrk a.plist_player{display:block}
+#uttrk a.mapdl{font-size:14pt; font-weight: bold;}
+#uttrk .utt-avatar .playername{	font-weight: bold; font-size:16pt; display:block;}
+
+.notsofreakingbig p{font-size: 90%;}
+.notsofreakingbig h1{font-size: 14pt;}
+.makeitfrigginbigger {font-size: 16pt;}
+.inYourFace{font-size: 16pt;}
+
+#uttrk table.mapInstalledOn {table-layout: fixed;}
+#uttrk table.mapInstalledOn tr{height: 30px;}
+#uttrk table.mapInstalledOn .servName{width: 80%;}
+#uttrk table.mapInstalledOn .lastGame{width: 20%;}
+
+/* '14 ut tracker player's timeline */
+/*#uttrk gdimg.timeline{border-color: #888;font-family: PixelEx.ttf; padding:36px 10px 5px 10px; width:960px;}
+#uttrk gdimg.timeline serverentry{color: #808080;}
+#uttrk gdimg.timeline servergrid{color: #202020;}
+#uttrk gdimg.timeline servergrid.day{color: #404040;}
+#uttrk gdimg.timeline textshadow{color: #000;}*/
+/* ut tracker dar;*/
+body.dark#uttrk .uttr_skin{border:1px solid #666;}
+body#uttrk input{border: 1px solid #999; font-size: 8pt; background: #ddd; color: #111; }
+body.dark#uttrk input{border: 1px solid #444; font-size: 8pt; background: #111; color: #fff; }
+
+#logo_cont{width: 960px; margin: 0 auto;display:block}
+
+#uttrk.nonUnr #lolhider{
+	display: none !important;
+}
+#uttrk.nonUnr .logo {
+	background: url(../logos/sissygst.png) !important; 
+	width: 960px !important; 
+	height:100px !important; 
+	background-size: 960px 100px !important;
+	display: block !important;
+}
+
+#uttrk #lolhider{
+	display: block;
+	text-align:center;
+}
+#uttrk.LOLHIDEACTIVE #lolhider{
+	display:none;
+}
+#uttrk .adlogo {
+	background: url(../logos/uttlogoV1small.png) ; 
+	width: 960px ; 
+	height:75px ; 
+	background-size: 960px 75px ;
+	background-repeat: no-repeat;
+	margin: 0;
+	display: block !important;
+}
+#uttrk .adlogo a,#uttrk .logo a{
+	opacity:0.01;
+	margin:0; 
+	display:block; 
+	width: 960px; 
+	height: 75px;
+}
+/*#uttrk .adlogo {
+	/* スーパークレイジーあすナリカウジェットファイタースリ2015
+	 * "ad" by waldo
+	 * /
+	background: url("../crazyjet.jpg");
+	width: 960px;
+	height: 325px;
+	background-size: 960px 325px;
+	background-repeat: no-repeat;
+	margin: 0;
+	transition: height 0.8s;
+
+}
+
+#uttrk.LOLHIDEACTIVE .adlogo, #uttrk.LOLHIDEACTIVE .logo {
+	background: url(../logos/uttlogoV1small.png) ; 
+	width: 960px ; 
+	height:75px ; 
+	background-size: 960px 75px ;
+	display: block !important;
+}
+
+#uttrk .adlogo a,#uttrk .logo a{
+	opacity:0.01;
+	margin:0; 
+	display:block; 
+	width: 960px; 
+	height: 325px;
+}
+#uttrk.LOLHIDEACTIVE .adlogo a{
+	height: 75px;
+}*/
+
+
+
+/* wez ty sie jebnij w ten avater */
+.similarItemsWithAvaters .splcell{
+	display: inline-block;
+	width: 300px;
+	height: 34px;
+	margin: 3px;
+}
+.similarItemsWithAvaters .splcell > div{
+	vertical-align: middle;
+}
+.similarItemsWithAvaters .splavatar {
+	display: inline-block;
+	width: 34px;
+	height: 34px;
+}
+
+.similarItemsWithAvaters .splavatar .uttr_skin {
+	max-width: 32px;
+	max-height: 32px;
+}
+
+.similarItemsWithAvaters .splinfo {
+	display: inline-block;
+	width: 260px;
+	height: 34px;
+	
+}
+.similarItemsWithAvaters .splinfo .itemname{
+	display: inline-block;
+	font-size: 12pt !important;
+	width: 260px;
+	height: 34px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	padding-top: 4px;
+	padding-left: 4px;
+}
+
+/* similar maps funny list 
+ * copysprite 2015 me 
+ * you can borrow the code if you want
+ */
+
+.similarMaps .smcell{
+	background-size: 100% auto;
+	background-position: center 67%;
+	background-repeat: no-repeat;
+	-webkit-transition: background-position 0.8s;
+	transition: background-position 0.8s;
+	display: inline-block;
+	margin: 3px;
+}
+.similarMaps .smcell:hover{
+	background-position: center 33%;
+}
+.similarMaps .smcell, .similarMaps .smcell a{
+	width: 300px;
+	height: 80px;
+	padding: 0;
+	vertical-align: bottom;
+}
+.similarMaps .smcell a,.similarMaps .smcell a:visited{
+	text-shadow: 0px 0px 4px #000, 1px 1px 1px #000, 1px -1px 1px #000, -1px 1px 1px #000, -1px -1px 1px #000;  
+	background-color: rgba(0,0,0,0.6);
+	font-size: 12pt;
+	color: #FFF;
+	display: block;
+	white-space: pre-line;
+	word-wrap: break-word;
+	padding: 3px;
+	transition: background-color 0.5s;
+	position: relative;
+}
+.similarMaps .smcell a:hover{
+	background-color: rgba(0,0,0,0);
+}
+.similarMaps .smcell a .mapPrefx{
+	font-size: 20pt;
+	color: #FF0;
+	float: left;
+	display: inline-block;
+	font-weight: semibold;
+	padding-right: 4px;
+	text-transform: uppercase;
+}
+.similarMaps .smcell a .mapPrefxSeparator{
+	font-size: 1pt;
+}
+
+.similarMaps .smcell a .mapFirstLteerefdfdsgfds{
+	font-size: 18pt;
+	color: #FFF;
+	position: absolute !important;
+	bottom: 5px;
+	right: 15px;
+	font-weight: bold;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+
+.lightPaletteColor{
+	display: inline-block;
+	width: 8px; 
+	height: 8px; 
+}
+
+/* '14 win gui */
+.gdi_screen_cont div{
+	overflow: hidden;
+}
+/* '14 winapi_console */
+.console{
+  font-family: "Consolas","Courier New", monospace;
+  font-size: 12px;
+  white-space: pre;
+  background: #000;
+}
+.t0{color:#000}
+.t1{color:#00A}
+.t2{color:#0A0}
+.t3{color:#0AA}
+.t4{color:#A00}
+.t5{color:#A0A}
+.t6{color:#A50}
+.t7{color:#AAA}
+.t8{color:#555}
+.t9{color:#00f}
+.t10{color:#5f5}
+.t11{color:#5ff}
+.t12{color:#f55}
+.t13{color:#f5f}
+.t14{color:#ff5}
+.t15{color:#fff}
+.t8,.t9,.t10,.t11,.t12,.t13,.t14,.t15{font-weight:bold}
+.b0{background-color:#000}
+.b1{background-color:#008}
+.b2{background-color:#080}
+.b3{background-color:#088}
+.b4{background-color:#800}
+.b5{background-color:#808}
+.b6{background-color:#880}
+.b7{background-color:#bbb}
+
+.blink{
+	animation: 1 blink 1s step-end infinite
+}
+@keyframes blink {
+	0% {visibility: hidden}
+	40% {visibility: visible}
+}
+
+/* '14 Music Game */
+#musicgame{
+	text-align:center;
+}
+#musicgame q{
+	font-size: 14pt;font-style:normal;
+}
+#ifhdr{
+	font-size: 20pt;
+}
+#whatsong{
+	font-size: 12pt;
+	font-style: italic;
+}
+#songname{
+	font-size:14pt;
+	font-style: italic;
+}
+#comeback{
+	font-size: 13pt;
+}
+.answer_cont{
+	margin: 10px auto;
+}
+#score_panel{
+	position: absolute; 
+	bottom: 0;
+	font-size: 16pt;
+}
+/* '09 nemopagi */
+.pagination {
+	margin: 10px auto;
+	display: table;
+	border-collapse:separate;
+	border-spacing:2px;
+}
+.pagination a,.pagination strong {
+	display: table-cell;
+	height: 18px;
+	text-align: center;
+
+}
+.pagination .pagenum{
+	background: #ddd;
+	color: #333;
+	border: 1px solid #999;
+	border-radius: 4px;
+	width: 26px;
+	text-decoration: none !important;
+}
+
+.pagination strong{
+	font-size: 120%;
+}
+.pagination strong.pagenum{
+	background: #999;
+	border-color: #777;
+}
+
+
+.pagination .pagnavi{
+	width: 50px;
+	font-size: 12pt;
+	margin: 0 6px;
+}
+
+.pagination strong.pagnavi{
+	font-weight: normal;
+	color: #333;
+}
+
+/* dark */
+.dark .pagination .pagenum{
+	background: #191919;
+	color: #BBB;
+	border: 1px solid #333;
+}
+.dark .pagination strong.pagenum{
+	background: #BBB;
+	color: #222;
+	border: 1px solid #FFF;
+}
+/* rage */
+.rage .pagination strong.pagenum{
+	background: #420;
+	border: 1px solid #B41;
+	color: #B41;
+}
+.rage .pagination .pagenum:hover{
+	border: 1px solid #B41;
+}
+
+/* '14 namotablething */
+.n14table .longtext,.verylongtext{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* geshi php */
+
+pre.php{
+	border: none !important;
+	margin: 0;
+	display: block;
+	tab-size: 4;
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	
+}
+
+pre.php .co1, pre.php .co4{
+	color: #888;
+}
+pre.php .st_h, pre.php .st0{
+	color: #e62;
+}
+
+pre.php .nu0, pre.php .nu12 {
+	color: #eb3;
+}
+pre.php .re0{
+	color: #79d;
+}
+pre.php .kw1, pre.php .kw2, pre.php .kw4{
+	font-weight: bold;
+	color: #9c6;
+}
+pre.php .sy0, pre.php .br0 {
+	color: #999;
+}
+pre.php a{
+	color: #bbb;
+	text-decoration: underline #444 dashed;
+	-moz-text-decoration: underline #444 dashed;
+}
+
+

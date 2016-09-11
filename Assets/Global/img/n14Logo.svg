@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" height="400" width="400">
+<title>N-XIV Logo</title>
+<defs>
+	<mask id="n14InnerMask" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="400">
+		<rect x="0" width="400" height="400" style="fill:#FFF" />
+		<!--SUBTRACT -->
+		<g style="fill:#000">
+			<polygon points="66.7,0 400,333.3 400,0" /> <!--toprightTriangle-->
+			<polygon points="66.7,133 333.3,400 66.7,400" /> <!--bottomleftTriangle-->
+			<polygon points="400,0 162.5,236.7 140.3,236.7 377.8,0" /> <!--diagonal-->
+			<!--<polygon points="400,22.2 400,0 162.5,236.7 162.5,258.9" /> <!- -diagonalOLD-->
+			<rect x="0" y="66.7" width="88.9" height="133.3" /><!--x-idot-separator-->
+			<rect x="66.7" y="0" width="22.3" height="100" /><!--i-idot-separator-->
+		</g>
+		<!--ADD -->
+		<g style="fill:#FFF">
+			<polygon points="333.3,66.7 400,0 400,400 333.3,400" /><!--rightVstroke-->
+		</g>
+	</mask>
+</defs>
+<g id="n"  transform="translate(0 83) rotate(45 200 200) scale(0.7)" style="fill:#6032B9">
+	<rect width="400" height="400" style="-webkit-mask: url(#n14InnerMask); mask: url(#n14InnerMask);" />
+	<rect x="0" y="266.7" width="200" height="66.7" transform="translate(-66.7 0)" /><!--X-diagonal-->
+</g>
+</svg>

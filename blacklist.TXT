@@ -1,0 +1,60 @@
+# UTTracker Servers BlackList rev22
+#   Last update: '15-05-06
+#
+# The following servers are sending fake information
+# in response to \players\ query.
+# Those servers were added to list for:
+#   showing more players in browser than in actual game,
+#   having idle players all the time, or
+#   adding UT bots to the players' list.
+#
+# !! The servers will still be present on the tracker, however, their RF Score will be lowered by 35% 
+#    Also, the player ranks won't be shown.
+#
+# all the ports are: GAMEPORT+1, even for other games that use different query ports
+#
+# useful tool: http://tracker.ut99.tk/nightly/fakeplayers.php
+# 
+# UT
+5.152.199.124:3001 #'14-10-30 "ComboGib -=(GRAPPLE)=-" fake players: server says 6, detected 1
+8.9.8.142:7778 #'14-10-30 "Dawn's Deathmatch Palace" fake players: server says 10, detected 1
+23.95.82.26:7778 #'14-07-16
+23.95.82.26:5556 #'14-07-16
+31.220.4.155:2251 #'15-05-06 as usual; same as 185.53.161.14:2251
+46.19.136.230:4445 #'14-04-16
+46.19.136.230:7778 #'14-04-16
+46.249.51.142:2251 #'14-03-05 imported from utt v1
+66.55.142.25:7778 #'14-10-02
+74.196.192.50:7778 #'14-04-16
+78.129.157.120:8889 #'15-04-08 "BATTLE x ROCKETS" fake players: server says 2, detected 0
+81.17.25.114:5001 #'14-04-03 imported from utt v1
+85.14.203.178:7778 #'15-01-12 "dU. NEW Server IP" bugged redirect server
+87.117.247.41:7778 #'14-10-15 "slv face only all weapons" fake players: server says 20, detected 0
+88.159.20.244:8001 #'14-04-03 imported from utt v1
+91.215.159.191:7778 #'14-03-05
+94.102.48.82:7778 #'14-11-21 "Rocket Dimension - DeathMatch FFA" fake players: server says 5, detected 0
+94.242.208.105:7778 #'14-04-03 imported from utt v1
+103.6.66.44:1112 #'14-04-16
+103.6.66.44:2223 #'14-04-03 imported from utt v1
+103.6.66.44:3334 #'14-04-03 imported from utt v1
+146.0.75.20:8889 #'14-03-05 imported from utt v1
+172.245.179.250:7778 #'14-10-06 "New Noobies{NoRules}" 
+173.199.79.238:7778 #'14-07-16
+178.63.120.207:5556 #'14-04-16
+185.16.85.100:7778 #'14-10-30 "*LG* House of Rockets" fake players: server says 10, detected 0
+185.37.145.226:7778 #'14-04-16
+185.53.161.14:2251 #'14-09-12 "Fast Download SMoKiNG 4 Everyone" fake players: server says 13, detected 8
+188.240.220.147:8889 #'14-03-05
+192.210.143.221:7778 #'14-04-03 imported from utt v1
+193.200.158.104:7778 #'14-04-16
+212.83.63.234:7778 #'14-03-05 imported from utt v1
+217.147.84.102:5556 #'14-03-05 "GRAPPLE FACE ONLY" fake players: server says 10, detected 1
+217.147.84.102:8801 #'14-11-01 "L a s T M a N S t a n d i n G xINSTAGIBx" fake players: server says 3, detected 0
+
+# all of these redirect to "slv face only"
+208.66.75.211:3801 #'14-10-30 "TeRRa PVv" redirect, fake players: server says 3, detected 0
+208.66.75.211:4001 #'14-10-30 "=A= Game Waiting for players..." redirect, fake players: server says 2, detected 0
+208.66.75.211:5231 #'14-10-10 "HouSe of Neighbours - WAN" redirect, fake players
+208.66.75.211:5431 #'14-11-05 "Ben Night Server" fake players: server says 8, detected 0
+208.66.75.211:5556 #'14-04-16  redirect, fake players
+208.66.75.211:6805 #'14-10-10 "[Pure]zeRo" redirect, fake players

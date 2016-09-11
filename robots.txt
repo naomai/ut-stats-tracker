@@ -1,0 +1,21 @@
+# SUPER SECRET FOLDERS DO NOT OPEN!!!111oneone1
+User-agent: *
+Crawl-Delay: 10
+Disallow: /uttracker/
+Disallow: /static/flags/
+Disallow: /static/skins/
+Disallow: /static/bitmaps/
+Disallow: /utmdc/
+Disallow: /n14data/
+Disallow: /server/*/game*
+Disallow: /search
+Disallow: /game.php
+Disallow: /nightly/
+
+User-agent: Googlebot-Image
+Allow: /skins/
+
+User-Agent: AhrefsBot
+Crawl-Delay: 5
+Disallow: /player/
+Disallow: /static/

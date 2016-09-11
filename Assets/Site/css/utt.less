@@ -1,0 +1,433 @@
+/*
+uttracker css
+compiled using less.php processor (https://github.com/oyejorge/less.php)
+if you're curious, original code is contained in "utt.less"
+*/
+
+@logos-path: "../logos";
+@skins-path: "../skins";
+
+@font: Segoe UI, Arial, Sans-Serif;
+
+body{font-family: @font; font-size: 9pt; background: #000; color: #AAA; width: 960px; margin: 0 auto; display:block;}
+/*body{transform:rotate(0.001deg);} /*antialiasing is stoopid!*/
+
+#uttrk.rage {
+
+	#body_cont{background: #171717; padding: 15px; width: 930px; margin: 0 auto; display:block;}
+	#logo_cont{width: 960px; margin: 0 auto;display:block}
+	.logo {
+		/*background: url("@{logos-path}/uttlogoV1c.png"); 
+		width: 960px; 
+		height:252px;		
+		background-size: 960px 252px; */
+		background: url("@{logos-path}/uttlogoV1small.png") ; 
+		width: 960px ; 
+		height:252px ; 
+		background-size: 960px 252px ;
+		margin: 0;
+	}
+	//.logo a{opacity:0.01;margin:0; display:block; width: 960px; height: 252px;}
+
+
+	.uttr_skin{border:1px solid black;width:64px;height:64px;display:inline-block; overflow:hidden;text-overflow:ellipsis; font-size: 7pt;}
+	.uttr_skin.unknown{background: url("@{skins-path}/unkn_skin.jpg"); background-size: contain;}
+	.utt-avatar .playername{font-weight: bold; font-size:16pt; display:block;}
+
+
+	big{font-size: 18pt;}
+	small{font-size: 8pt;}
+	a{color: #EEE;}
+	a:hover,table a{text-decoration: none;}
+	table a:hover{color: #fff !important;}
+
+	tr .hoverhide{
+		visibility: hidden;
+	}
+
+	tr:hover .hoverhide{
+		visibility: visible;
+	}
+
+	h1{
+		text-align: center;
+	}
+
+	h2,h3{
+		color: #FFF;
+	}
+
+	table{
+		border-spacing: 0px;
+		border-collapse: collapse;
+		margin: 20px 0px;
+	}
+
+
+	table td, table {
+		padding: 3px;
+		border: 1px solid #222;
+		font-size: 10pt;
+	}
+
+	table thead tr{
+		background: #333;
+	}
+	table thead th{
+		padding: 3px 0;
+	}
+
+	table tbody tr:nth-child(2n){
+		background: #1f1f1f;
+	}
+	table tbody tr:nth-child(2n) td{
+		border: 1px solid #1a1a1a;
+	}
+
+	table.huge{
+		width: 95%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	table.semihuge{
+		width: 60%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	table.flexisemihuge{
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.notsofreakingbig{
+		font-size: 80%;
+	}
+	header.notsofreakingbig{
+		font-size: 10pt;
+	}
+
+	.n14table .longtext,.verylongtext{
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.fragm{
+		font-size: 9pt;
+	}
+
+	.mappreview,.mapinfo{
+		display: table-cell;
+	}
+
+	.mappreview{
+		padding-right: 10px;
+		text-align: center;
+	}
+	.mappreview img.mapimage{
+		max-width: 160px;
+		vertical-align:top;
+	}
+
+	.mappreview a.maplink{
+		font-size: 10pt;
+	}
+
+	.mapinfo {
+		width: 100%;
+	}
+
+	.maplayout img{
+		max-width: 920px;
+	}
+
+	.mapdl {
+		font-size: 16pt;
+		font-weight: bold;
+	}
+
+	#trkNavi{
+		background: #000;
+		color: #F0F;
+		width: 940px;
+		padding: 0px 10px;
+		font-family: comic sans ms; /* masz i odpierdol sie*/
+	}
+
+	#trkNavi a, #trkNavi a:visited{
+		text-decoration: none;
+		font-weight: bold;
+		color: #000;
+		padding: 5px;
+		display: inline-block;
+	}
+
+	table#masterlist {table-layout: fixed;}
+	table#masterlist td{height: 22px}
+	table#masterlist .mlrow{height:25px;}
+	table#masterlist .mltype{width:5%;text-align:center;}
+	table#masterlist .mltype img{display:block; margin: 0 auto;} 
+	table#masterlist td{padding: 1px;}
+	table#masterlist td.mltype{font-size: 8pt; color: #999;}
+	table#masterlist td.mltype br {display: none;}
+	table#masterlist .mlname{width:55%;}
+	table#masterlist .mlcpl{width:7%; text-align:center;}
+	table#masterlist .mlcm{width:18%; font-size: 9pt;}
+	/*table#masterlist .mlrf{width:4%; text-align:center;}*/
+	table#masterlist .mlip{width:15%; font-size: 8pt;}
+	table#masterlist .mlip .mlic{display: inline-block; width: 19px; text-align: center;}
+	table#masterlist .mlcpl_full{color: #A12;}
+	table#masterlist .mlcpl_almostfull{color: #9A4;}
+	table#masterlist .mlcpl_openslots{color: #0C4;}
+	table#masterlist .mlcpl_numplayers{font-size:10pt;}
+	table#masterlist .mlcpl_maxplayers{font-size:7pt;}
+	table#masterlist .mlcpl_excl{font-size:7pt; cursor: help; color: #A12;}
+
+	table#servonline td{border: 1px solid rgba(0,0,0,0.3) !important; padding: 2px !important;}
+	table#servonline th{font-size: 16pt;}
+	table#servonline .soskin{width: 36px; text-align:center;font-size: 7pt; color: #999;}
+	table#servonline .soname{width: 200px;}
+	table#servonline .soscore{width: 50px; text-align:center;}
+	table#servonline td.soname,td.soscore{font-size: 12pt;}
+	table#servonline .sotime{width: 40px;}
+	table#servonline .soskin .uttr_skin{width: 32px; height: 32px; background-size: 32px 32px;}
+	table#servonline a{color: #FFF !important;}
+
+	.imgleft{float:left; margin-right: 8px;}
+	table#pservers .slastvisit{font-size: 7pt;}
+	table#pservers a.slastmap{font-size: 9pt;}
+
+	/*
+	.tcred{color: #300;}
+	.tcblue{color: #005;}
+	.tcgreen{color: #030;}
+	.tcgold{color: #420;}
+	.tcgray{color: #111;}
+	*/
+	@teamred: #300;
+	@teamblue: #121240;
+	@teamgreen: #030;
+	@teamgold: #331600;
+	@teamgray: #222;
+
+	.tbred{background: @teamred !important;}
+	.tbblue{background: @teamblue !important;}
+	.tbgreen{background: @teamgreen !important;}
+	.tbgold{background: @teamgold !important;}
+	.tbgray{background: @teamgray !important;}
+
+	.tcred{background: lighten(@teamred,15%) !important;}
+	.tcblue{background: lighten(@teamblue,15%) !important;}
+	.tcgreen{background: lighten(@teamgreen,15%) !important;}
+	.tcgold{background: lighten(@teamgold,15%) !important;}
+	.tcgray{background: lighten(@teamgray,15%) !important;}
+
+	.spec-list{font-size:12pt; text-align:center;}
+
+	gdimg.timeline{border-color: #888;font-family: sserifee.fon; padding:36px 10px 5px 10px; width:960px;color: #AAAAAA;}
+	gdimg.timeline serverentry{color: #808080;}
+	gdimg.timeline servergrid{color: #202020;}
+	gdimg.timeline servergrid.day{color: #404040;}
+	gdimg.timeline textshadow{color: #000000;}
+	gdimg.timeline thead{background: #222222;}
+	gdimg.timeline a{color: #CCCCCC;}
+
+	.relatedplayers .splcell{
+		display: inline-block;
+		width: 300px;
+		height: 34px;
+		margin: 3px;
+	}
+	.relatedplayers .splcell > div{
+		vertical-align: middle;
+	}
+	.relatedplayers .splskin {
+		display: inline-block;
+		width: 34px;
+		height: 34px;
+	}
+	.relatedplayers  .splskin .uttr_skin {
+		max-width: 32px;
+		max-height: 32px;
+	}
+	.relatedplayers .splinfo {
+		display: inline-block;
+		width: 260px;
+		height: 34px;
+		
+	}
+	.relatedplayers .splinfo .playername{
+		display: inline-block;
+		font-size: 12pt !important;
+		width: 260px;
+		height: 34px;
+		overflow:hidden;
+		text-overflow:ellipsis;
+		padding-top: 4px;
+		padding-left: 4px;
+	}
+
+	.lightPaletteColor{
+		display: inline-block;
+		width: 8px; 
+		height: 8px; 
+	}
+
+	/* GAMEMODE-SPECIFIC COLOR SCHEMES */
+	/* to skip that huge block, ctrl+f "ENDOF GSCS" */
+	/* // changed my mind, this looks terrible
+	.uttColorScheme(".gm-dm";"#9e0020";"uttlogoV1dmA.png");
+	.uttColorSchemeDouble(".gm-ctf";"#1a3399";"#800000";"uttlogoV1ctfA.png");
+	.uttColorScheme(".gm-bt";"#943214";"uttlogoV1btctf.jpg");
+	.uttColorScheme(".gm-mh";"#379315";"uttlogoV1mh.jpg");
+	.uttColorScheme(".gm-tdm.gma-sniper";"#6b3588";"uttlogoV1snipertdm.jpg");
+	.uttColorScheme(".gm-ctf.gma-insta";"#9e6700";"uttlogoV1instactf2a.png");
+	.uttColorScheme(".gm-ctf.gma-combo";"#2d637c";"uttlogoV1comboctf.jpg");
+	.uttColorScheme(".gm-sgi";"#426935";"uttlogoV1siegeC.png");
+	*/
+	.uttColorSchemeDouble("";"#882000";"#884422";"ginger.png");
+	/* ENDOF GSCS */
+
+	/*mixins*/
+
+	.tvEffect(@col1;@col2){
+		background: repeating-linear-gradient(0deg,@col1,@col1 1px,@col2 1px,@col2 2px);
+	}
+
+	.uttColorScheme(@cls; @col; @logoname){
+		.uttColorSchemeDouble(@cls;@col;@col;@logoname);
+	}
+
+	.uttColorSchemeDouble(@cls; @col; @col2; @logoname){
+		@clsx: e(@cls);
+		
+		@colBase: color(@col);
+		@colAddit: color(@col2);
+		
+		@colDark: darken(@colAddit,32%);
+		@colNormal: darken(@colBase,28%);
+		@colLNormal: darken(@colBase,24%);
+		@colHLNormal: darken(@colBase,20%);
+		
+		@colLight: lighten(@colAddit,38%);
+		@colLightSat: lighten(saturate(@colAddit,80%),30%);
+		@colBright: lighten(@colBase,55%);
+		
+		@{clsx} {
+			& #body_cont{
+				background: @colNormal;
+				
+				color: #EEE;
+			}
+			& .logo{
+				background: url("@{logos-path}/@{logoname}");
+			}
+			& *::selection{
+				background-color: @colBase;
+				color: #EEE;
+			}
+			& *::-moz-selection{
+				background-color: @colBase;
+				color: #EEE;
+			}
+			& a, & a:visited{
+				color: @colLightSat;
+			}
+			& table {
+			  border: 1px solid @colLNormal;
+			}
+			& table thead tr {
+			  background: @colHLNormal;
+			  border: 1px solid @colHLNormal;
+			  border-bottom: 2px solid @colLightSat;
+			}
+			& table tbody tr {
+			  background: @colNormal;
+			}
+			& table tbody tr td{
+			  border: 1px solid @colLNormal;
+			}
+			& table tbody tr:nth-child(2n) {
+			  background: @colLNormal;
+			}
+			& table tbody tr:nth-child(2n) td {
+			  border: 1px solid @colNormal;
+			}
+					
+			& table tfoot tr {
+				background: @colHLNormal;
+				border: 1px solid @colHLNormal;
+				border-top: 2px solid @colLightSat;
+			}
+			& table tfoot td{
+				border: none;
+				font-size: 8pt;
+			} 
+			& #trkNavi {
+				
+				background: @colLight;
+				color: @colDark;
+			}
+			& #trkNavi a {
+				color: @colDark;
+			}
+			& input, & select{
+				background: @colDark;
+				border: 1px solid @colHLNormal;
+				color: @colLight;
+			}
+			
+			& .pagination strong.pagenum{
+				background: @colHLNormal;
+				border: 1px solid @colBase;
+				color: @colBright;
+			}
+			
+			& .pagination .pagenum:hover{
+				border: 1px solid @colBase;
+			}
+			
+			.pagination .pagenum{
+				background: @colLNormal;
+				color: @colBase;
+				border: 1px solid @colHLNormal;
+			}
+		}
+	}
+
+	/* Pagination */
+	.pagination {
+		margin: 10px auto;
+		display: table;
+		border-collapse:separate;
+		border-spacing:2px;
+	}
+	.pagination a,.pagination strong {
+		display: table-cell;
+		height: 18px;
+		text-align: center;
+
+	}
+	.pagination .pagenum{
+		border-radius: 3px;
+		width: 26px;
+		text-decoration: none !important;
+	}
+
+	.pagination strong{
+		font-size: 120%;
+	}
+
+	.pagination .pagnavi{
+		width: 50px;
+		font-size: 12pt;
+		margin: 0 6px;
+	}
+
+	.pagination strong.pagnavi{
+		font-weight: normal;
+		color: #333;
+	}
+
+}
+

@@ -1,0 +1,515 @@
+/*
+uttracker css
+compiled using less.php processor (https://github.com/oyejorge/less.php)
+if you're curious, original code is contained in "utt.less"
+*/
+body {
+  font-family: Segoe UI, Arial, Sans-Serif;
+  font-size: 9pt;
+  background: #000;
+  color: #AAA;
+  width: 960px;
+  margin: 0 auto;
+  display: block;
+}
+/*body{transform:rotate(0.001deg);} /*antialiasing is stoopid!*/
+#uttrk.rage {
+  /*table#masterlist .mlrf{width:4%; text-align:center;}*/
+  /*
+	.tcred{color: #300;}
+	.tcblue{color: #005;}
+	.tcgreen{color: #030;}
+	.tcgold{color: #420;}
+	.tcgray{color: #111;}
+	*/
+  /* GAMEMODE-SPECIFIC COLOR SCHEMES */
+  /* to skip that huge block, ctrl+f "ENDOF GSCS" */
+  /* // changed my mind, this looks terrible
+	.uttColorScheme(".gm-dm";"#9e0020";"uttlogoV1dmA.png");
+	.uttColorSchemeDouble(".gm-ctf";"#1a3399";"#800000";"uttlogoV1ctfA.png");
+	.uttColorScheme(".gm-bt";"#943214";"uttlogoV1btctf.jpg");
+	.uttColorScheme(".gm-mh";"#379315";"uttlogoV1mh.jpg");
+	.uttColorScheme(".gm-tdm.gma-sniper";"#6b3588";"uttlogoV1snipertdm.jpg");
+	.uttColorScheme(".gm-ctf.gma-insta";"#9e6700";"uttlogoV1instactf2a.png");
+	.uttColorScheme(".gm-ctf.gma-combo";"#2d637c";"uttlogoV1comboctf.jpg");
+	.uttColorScheme(".gm-sgi";"#426935";"uttlogoV1siegeC.png");
+	*/
+  /* ENDOF GSCS */
+  /*mixins*/
+  /* Pagination */
+}
+#uttrk.rage #body_cont {
+  background: #171717;
+  padding: 15px;
+  width: 930px;
+  margin: 0 auto;
+  display: block;
+}
+#uttrk.rage #logo_cont {
+  width: 960px;
+  margin: 0 auto;
+  display: block;
+}
+#uttrk.rage .logo {
+  /*background: url("@{logos-path}/uttlogoV1c.png"); 
+		width: 960px; 
+		height:252px;		
+		background-size: 960px 252px; */
+  background: url("../logos/uttlogoV1small.png");
+  width: 960px;
+  height: 252px;
+  background-size: 960px 252px ;
+  margin: 0;
+}
+#uttrk.rage .uttr_skin {
+  border: 1px solid black;
+  width: 64px;
+  height: 64px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 7pt;
+}
+#uttrk.rage .uttr_skin.unknown {
+  background: url("../skins/unkn_skin.jpg");
+  background-size: contain;
+}
+#uttrk.rage .utt-avatar .playername {
+  font-weight: bold;
+  font-size: 16pt;
+  display: block;
+}
+#uttrk.rage big {
+  font-size: 18pt;
+}
+#uttrk.rage small {
+  font-size: 8pt;
+}
+#uttrk.rage a {
+  color: #EEE;
+}
+#uttrk.rage a:hover,
+#uttrk.rage table a {
+  text-decoration: none;
+}
+#uttrk.rage table a:hover {
+  color: #fff !important;
+}
+#uttrk.rage tr .hoverhide {
+  visibility: hidden;
+}
+#uttrk.rage tr:hover .hoverhide {
+  visibility: visible;
+}
+#uttrk.rage h1 {
+  text-align: center;
+}
+#uttrk.rage h2,
+#uttrk.rage h3 {
+  color: #FFF;
+}
+#uttrk.rage table {
+  border-spacing: 0px;
+  border-collapse: collapse;
+  margin: 20px 0px;
+}
+#uttrk.rage table td,
+#uttrk.rage table {
+  padding: 3px;
+  border: 1px solid #222;
+  font-size: 10pt;
+}
+#uttrk.rage table thead tr {
+  background: #333;
+}
+#uttrk.rage table thead th {
+  padding: 3px 0;
+}
+#uttrk.rage table tbody tr:nth-child(2n) {
+  background: #1f1f1f;
+}
+#uttrk.rage table tbody tr:nth-child(2n) td {
+  border: 1px solid #1a1a1a;
+}
+#uttrk.rage table.huge {
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+#uttrk.rage table.semihuge {
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+#uttrk.rage table.flexisemihuge {
+  margin-left: auto;
+  margin-right: auto;
+}
+#uttrk.rage .notsofreakingbig {
+  font-size: 80%;
+}
+#uttrk.rage header.notsofreakingbig {
+  font-size: 10pt;
+}
+#uttrk.rage .n14table .longtext,
+#uttrk.rage .verylongtext {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#uttrk.rage .fragm {
+  font-size: 9pt;
+}
+#uttrk.rage .mappreview,
+#uttrk.rage .mapinfo {
+  display: table-cell;
+}
+#uttrk.rage .mappreview {
+  padding-right: 10px;
+  text-align: center;
+}
+#uttrk.rage .mappreview img.mapimage {
+  max-width: 160px;
+  vertical-align: top;
+}
+#uttrk.rage .mappreview a.maplink {
+  font-size: 10pt;
+}
+#uttrk.rage .mapinfo {
+  width: 100%;
+}
+#uttrk.rage .maplayout img {
+  max-width: 920px;
+}
+#uttrk.rage .mapdl {
+  font-size: 16pt;
+  font-weight: bold;
+}
+#uttrk.rage #trkNavi {
+  background: #000;
+  color: #F0F;
+  width: 940px;
+  padding: 0px 10px;
+  font-family: comic sans ms;
+  /* masz i odpierdol sie*/
+}
+#uttrk.rage #trkNavi a,
+#uttrk.rage #trkNavi a:visited {
+  text-decoration: none;
+  font-weight: bold;
+  color: #000;
+  padding: 5px;
+  display: inline-block;
+}
+#uttrk.rage table#masterlist {
+  table-layout: fixed;
+}
+#uttrk.rage table#masterlist td {
+  height: 22px;
+}
+#uttrk.rage table#masterlist .mlrow {
+  height: 25px;
+}
+#uttrk.rage table#masterlist .mltype {
+  width: 5%;
+  text-align: center;
+}
+#uttrk.rage table#masterlist .mltype img {
+  display: block;
+  margin: 0 auto;
+}
+#uttrk.rage table#masterlist td {
+  padding: 1px;
+}
+#uttrk.rage table#masterlist td.mltype {
+  font-size: 8pt;
+  color: #999;
+}
+#uttrk.rage table#masterlist td.mltype br {
+  display: none;
+}
+#uttrk.rage table#masterlist .mlname {
+  width: 55%;
+}
+#uttrk.rage table#masterlist .mlcpl {
+  width: 7%;
+  text-align: center;
+}
+#uttrk.rage table#masterlist .mlcm {
+  width: 18%;
+  font-size: 9pt;
+}
+#uttrk.rage table#masterlist .mlip {
+  width: 15%;
+  font-size: 8pt;
+}
+#uttrk.rage table#masterlist .mlip .mlic {
+  display: inline-block;
+  width: 19px;
+  text-align: center;
+}
+#uttrk.rage table#masterlist .mlcpl_full {
+  color: #A12;
+}
+#uttrk.rage table#masterlist .mlcpl_almostfull {
+  color: #9A4;
+}
+#uttrk.rage table#masterlist .mlcpl_openslots {
+  color: #0C4;
+}
+#uttrk.rage table#masterlist .mlcpl_numplayers {
+  font-size: 10pt;
+}
+#uttrk.rage table#masterlist .mlcpl_maxplayers {
+  font-size: 7pt;
+}
+#uttrk.rage table#masterlist .mlcpl_excl {
+  font-size: 7pt;
+  cursor: help;
+  color: #A12;
+}
+#uttrk.rage table#servonline td {
+  border: 1px solid rgba(0, 0, 0, 0.3) !important;
+  padding: 2px !important;
+}
+#uttrk.rage table#servonline th {
+  font-size: 16pt;
+}
+#uttrk.rage table#servonline .soskin {
+  width: 36px;
+  text-align: center;
+  font-size: 7pt;
+  color: #999;
+}
+#uttrk.rage table#servonline .soname {
+  width: 200px;
+}
+#uttrk.rage table#servonline .soscore {
+  width: 50px;
+  text-align: center;
+}
+#uttrk.rage table#servonline td.soname,
+#uttrk.rage td.soscore {
+  font-size: 12pt;
+}
+#uttrk.rage table#servonline .sotime {
+  width: 40px;
+}
+#uttrk.rage table#servonline .soskin .uttr_skin {
+  width: 32px;
+  height: 32px;
+  background-size: 32px 32px;
+}
+#uttrk.rage table#servonline a {
+  color: #FFF !important;
+}
+#uttrk.rage .imgleft {
+  float: left;
+  margin-right: 8px;
+}
+#uttrk.rage table#pservers .slastvisit {
+  font-size: 7pt;
+}
+#uttrk.rage table#pservers a.slastmap {
+  font-size: 9pt;
+}
+#uttrk.rage .tbred {
+  background: #330000 !important;
+}
+#uttrk.rage .tbblue {
+  background: #121240 !important;
+}
+#uttrk.rage .tbgreen {
+  background: #003300 !important;
+}
+#uttrk.rage .tbgold {
+  background: #331600 !important;
+}
+#uttrk.rage .tbgray {
+  background: #222222 !important;
+}
+#uttrk.rage .tcred {
+  background: #800000 !important;
+}
+#uttrk.rage .tcblue {
+  background: #23237c !important;
+}
+#uttrk.rage .tcgreen {
+  background: #008000 !important;
+}
+#uttrk.rage .tcgold {
+  background: #803700 !important;
+}
+#uttrk.rage .tcgray {
+  background: #484848 !important;
+}
+#uttrk.rage .spec-list {
+  font-size: 12pt;
+  text-align: center;
+}
+#uttrk.rage gdimg.timeline {
+  border-color: #888;
+  font-family: sserifee.fon;
+  padding: 36px 10px 5px 10px;
+  width: 960px;
+  color: #AAAAAA;
+}
+#uttrk.rage gdimg.timeline serverentry {
+  color: #808080;
+}
+#uttrk.rage gdimg.timeline servergrid {
+  color: #202020;
+}
+#uttrk.rage gdimg.timeline servergrid.day {
+  color: #404040;
+}
+#uttrk.rage gdimg.timeline textshadow {
+  color: #000000;
+}
+#uttrk.rage gdimg.timeline thead {
+  background: #222222;
+}
+#uttrk.rage gdimg.timeline a {
+  color: #CCCCCC;
+}
+#uttrk.rage .relatedplayers .splcell {
+  display: inline-block;
+  width: 300px;
+  height: 34px;
+  margin: 3px;
+}
+#uttrk.rage .relatedplayers .splcell > div {
+  vertical-align: middle;
+}
+#uttrk.rage .relatedplayers .splskin {
+  display: inline-block;
+  width: 34px;
+  height: 34px;
+}
+#uttrk.rage .relatedplayers .splskin .uttr_skin {
+  max-width: 32px;
+  max-height: 32px;
+}
+#uttrk.rage .relatedplayers .splinfo {
+  display: inline-block;
+  width: 260px;
+  height: 34px;
+}
+#uttrk.rage .relatedplayers .splinfo .playername {
+  display: inline-block;
+  font-size: 12pt !important;
+  width: 260px;
+  height: 34px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 4px;
+  padding-left: 4px;
+}
+#uttrk.rage .lightPaletteColor {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+}
+#uttrk.rage  #body_cont {
+  background: #000000;
+  color: #EEE;
+}
+#uttrk.rage  .logo {
+  background: url("../logos/ginger.png");
+}
+#uttrk.rage  *::selection {
+  background-color: #882000;
+  color: #EEE;
+}
+#uttrk.rage  *::-moz-selection {
+  background-color: #882000;
+  color: #EEE;
+}
+#uttrk.rage  a,
+#uttrk.rage  a:visited {
+  color: #ff8244;
+}
+#uttrk.rage  table {
+  border: 1px solid #0e0300;
+}
+#uttrk.rage  table thead tr {
+  background: #220800;
+  border: 1px solid #220800;
+  border-bottom: 2px solid #ff8244;
+}
+#uttrk.rage  table tbody tr {
+  background: #000000;
+}
+#uttrk.rage  table tbody tr td {
+  border: 1px solid #0e0300;
+}
+#uttrk.rage  table tbody tr:nth-child(2n) {
+  background: #0e0300;
+}
+#uttrk.rage  table tbody tr:nth-child(2n) td {
+  border: 1px solid #000000;
+}
+#uttrk.rage  table tfoot tr {
+  background: #220800;
+  border: 1px solid #220800;
+  border-top: 2px solid #ff8244;
+}
+#uttrk.rage  table tfoot td {
+  border: none;
+  font-size: 8pt;
+}
+#uttrk.rage  #trkNavi {
+  background: #e2a78a;
+  color: #050301;
+}
+#uttrk.rage  #trkNavi a {
+  color: #050301;
+}
+#uttrk.rage  input,
+#uttrk.rage  select {
+  background: #050301;
+  border: 1px solid #220800;
+  color: #e2a78a;
+}
+#uttrk.rage  .pagination strong.pagenum {
+  background: #220800;
+  border: 1px solid #882000;
+  color: #ffb8a2;
+}
+#uttrk.rage  .pagination .pagenum:hover {
+  border: 1px solid #882000;
+}
+#uttrk.rage  .pagination .pagenum {
+  background: #0e0300;
+  color: #882000;
+  border: 1px solid #220800;
+}
+#uttrk.rage .pagination {
+  margin: 10px auto;
+  display: table;
+  border-collapse: separate;
+  border-spacing: 2px;
+}
+#uttrk.rage .pagination a,
+#uttrk.rage .pagination strong {
+  display: table-cell;
+  height: 18px;
+  text-align: center;
+}
+#uttrk.rage .pagination .pagenum {
+  border-radius: 3px;
+  width: 26px;
+  text-decoration: none !important;
+}
+#uttrk.rage .pagination strong {
+  font-size: 120%;
+}
+#uttrk.rage .pagination .pagnavi {
+  width: 50px;
+  font-size: 12pt;
+  margin: 0 6px;
+}
+#uttrk.rage .pagination strong.pagnavi {
+  font-weight: normal;
+  color: #333;
+}

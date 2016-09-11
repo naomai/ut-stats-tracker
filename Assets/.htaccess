@@ -1,0 +1,15 @@
+RewriteEngine On
+
+#RewriteBase /static
+#http://stackoverflow.com/a/21063276
+RewriteCond %{REQUEST_URI}::$1 ^(.*?/)(.*)::\2$
+RewriteRule ^(.*)$ - [E=BASE:%1]
+
+Options -Indexes
+
+ErrorDocument 404 /404.php
+
+DirectoryIndex index.php index.htm index.html /static/list.php
+
+#RewriteCond $2 !=php
+#RewriteRule (.+)\.(.+)$ /static/cdnProxy.php?file=$1.$2 [L,QSA]

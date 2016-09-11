@@ -1,0 +1,88 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+utt_updater3
+</name>
+</assembly>
+<members>
+<member name="P:utt_updater3.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:utt_updater3.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:utt_updater3.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="M:utt_updater3.JulkinNet.GetTickCount">
+	<summary>Creates network connection using simple interface</summary>
+</member><member name="F:utt_updater3.JulkinNet.timeout">
+	<summary>Maximum time for operation</summary>
+</member><member name="F:utt_updater3.JulkinNet.udpRemote">
+	<summary>Remote endpoint after receiving data</summary>
+</member><member name="M:utt_updater3.JulkinNet.#ctor">
+	<summary>Creates new socket.</summary>
+</member><member name="M:utt_updater3.JulkinNet.connect(System.String)">
+	<summary>Establish connection to selected host</summary>
+	<param name="address">Host name followed by colon and port number (eg.: 10.0.0.2:21)</param>
+</member><member name="M:utt_updater3.JulkinNet.connect(System.String,System.Int32)">
+	<summary>Establish connection to selected host</summary>
+	<param name="ip">Host name</param>
+	<param name="port">Port number</param>
+</member><member name="M:utt_updater3.JulkinNet.disconnect">
+	<summary>Close the socket if it's connected</summary>
+</member><member name="M:utt_updater3.JulkinNet.setProto(utt_updater3.JulkinNet.jnProt)">
+	<summary>
+ Change socket protocol before connecting 
+ </summary>
+	<param name="prot">Protocol (jnTCP or jnUDP)</param>
+	<remarks></remarks>
+</member><member name="M:utt_updater3.JulkinNet.swrite(System.Byte[])">
+	<summary>
+ Send packet to remote computer
+ </summary>
+	<param name="packet">Packet content</param>
+	<remarks></remarks>
+</member><member name="M:utt_updater3.JulkinNet.sreadNext">
+	<summary>
+ Reads the next incoming packet
+ </summary>
+	<returns>Packet content</returns>
+	<remarks></remarks>
+</member><member name="M:utt_updater3.UTQueryPacket.parseGamespyResponse(System.String,System.Boolean)">
+	<summary>
+ Reassemble and parse Gamespy protocol response into a Hashtable object
+ </summary>
+	<param name="q">Response received from server</param>
+	<param name="masterServer">Set to True to skip queryid checks when talking with master server</param>
+	<remarks></remarks>
+</member><member name="M:utt_updater3.UTQuery.parseQuery(System.String,System.Boolean)">
+	<summary>
+ Reassemble and parse Gamespy protocol response into a Hashtable object
+ </summary>
+	<param name="q">Response received from server</param>
+	<remarks></remarks>
+</member><member name="M:utt_updater3.UTQuery.gsenc(System.String,System.String)">
+	<summary>
+ Generates response needed to query master servers using Gamespy protocol.
+ </summary>
+	<param name="chal">the string containing the challenge received from the server.</param>
+	<param name="enkey">the gamekey or any other text string used as algorithm's key, usually it is the gamekey but "might" be another thing in some cases. Each game has its unique Gamespy gamekey which are available here: http://aluigi.org/papers/gslist.cfg </param>
+	<returns>
+ the destination buffer that will contain the calculated
+ response. Its length is 4/3 of the challenge size so if the
+ challenge is 6 bytes long, the response will be 8 bytes long
+ plus the final NULL byte which is required (to be sure of the
+ allocated space use 89 bytes or "((len * 4) / 3) + 3")
+ if this parameter is NULL the function will allocate the
+ memory for a new one automatically
+ </returns>
+	<remarks></remarks>
+</member>
+</members>
+</doc>

@@ -1,0 +1,133 @@
+﻿/*
+ * UT Tracker
+ * Copysphright (:P) 2009, 2011, 2014 Namonaki14
+ * 
+ * This program is free software - whatever that means.
+ * You may redistribute it, modify, steal it under the conditions
+ * of Wolver's General License CR@P, version 666,
+ * issued by Greenpiss Foundation, you may as well put it 
+ * up in your <censored>, if you like it.
+ * 
+ * This program is distributed in a hope that some idiot will download it.
+ * The author does not take any responsibility for what you're going to do
+ * with this software. In conclusion - if you do not know how to use
+ * this program, delete it immediately. 
+ * 
+ * You should have received a paper copy of this license in the amount of
+ * half a million pieces. If the license has not been delivered or 
+ * you don't like it, visit the following web site:
+ * http://www.google.com/search?q=software+license
+ * and find yourself another one that suits you.
+ * 
+ * The full text of this license is available at:
+ * http://not-so-awesome.tk/licensing/SRAQ23_LIC_EN.TXT
+ * 
+**/
+
+body{
+	font-family: times new roman !important;
+	background: #400 !important; 
+	color: #FFF !important;
+	cursor: url(../curAF15.png) 3 6, auto;
+	transform:rotate(0.001deg);
+}
+
+h2, h3{
+	font-family: comic sans ms !important;
+	animation: ninja 1s steps(4, start) infinite;
+}
+@keyframes ninja {
+	to {
+		visibility: hidden;
+	}
+}
+
+#uttrk .adlogo, #uttrk.LOLHIDEACTIVE .adlogo {
+	background: url("../logos/utstAF15.jpg") !important;
+	width: 960px !important;
+	height: 302px !important;
+	background-size: 960px 302px !important;
+	background-repeat: no-repeat !important;
+}
+
+#uttrk .adlogo a, #uttrk.LOLHIDEACTIVE .adlogo a{
+	width: 960px !important;
+	height: 302px !important;
+}
+
+#uttrk #lolhider{
+	display:none !important;
+}
+
+a{
+	font-family: verdana !important;
+	text-decoration: underline !important;
+	color: #880 !important;
+	cursor: url(../curhandAF15.png) 12 7, auto !important;
+}
+.pagenum{
+	border: none !important;
+	background: none !important;
+}
+
+table,td{
+	border: 2px outset #888 !important;
+}
+tbody tr:hover {
+	background: #000 !important;
+}
+
+
+table thead tr{
+	background: #FFF !important;
+	color: #080 !important;
+}
+
+.tbred {
+  background: #800 !important;
+}
+.tbblue {
+  background: #008 !important;
+}
+.tbgreen {
+  background: #080 !important;
+}
+.tbgold {
+  background: #880 !important;
+}
+.tbgold a, .tbgreen a{
+	color: #000 !important;
+}
+.tbgray {
+  background: #444 !important;
+}
+.tcred {
+  background: #F00 !important;
+}
+.tcblue {
+  background: #00F !important;
+}
+.tcgreen {
+  background: #0F0 !important;
+}
+.tcgold {
+  background: #FF0 !important;
+}
+.tcgray {
+  background: #888 !important;
+}
+
+::selection{background: #008 !important; color:#FFF !important;}::-moz-selection{background: #008 !important; color:#FFF !important;}
+
+.cflag{
+	width: 16px;
+	height: 16px;
+}
+
+#logo_cont, #body_cont{
+	margin-left: 0px !important;
+}
+
+header p{
+	font-size: 12pt !important;
+}

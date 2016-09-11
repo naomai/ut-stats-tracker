@@ -1,0 +1,75 @@
+playerdata{
+	font-family: segoe ui, tahoma, sans-serif;
+	font-size: 12pt;
+}
+playerdata description{
+	display: block;
+	font-weight: bold;
+}
+
+playerdata explain{
+	display:none;
+}
+
+playerdata playerinfo *{
+	display: block;
+}
+playerdata playerinfo id:before{
+	content: "id: "
+}
+playerdata playerinfo name:before{
+	content: "name: "
+}
+playerdata playerinfo skindata:before{
+	content: "skin: "
+}
+playerdata playerinfo country:before{
+	content: "country: "
+}
+
+playerdata playerhistory:before{
+	content: "Player history";
+	display: block;
+}
+playerdata playerstats:before{
+	content: "Player stats";
+	display: block;
+}
+playerdata playerhistory,
+playerdata playerstats{
+	display: table;
+	font-size: 10pt;
+	width: 960px;
+	border: 1px solid #888;
+}
+
+playerdata playerhistory > header,
+playerdata playerstats > header{
+	font-weight:bold;
+}
+
+playerdata playerhistory > header, playerdata playerhistory > record,
+playerdata playerstats > header, playerdata playerstats > record {
+	display: table-row;
+}
+playerdata playerhistory > header > *,playerdata playerhistory > record > *,
+playerdata playerstats > header > *,playerdata playerstats > record > * {
+	display: table-cell;
+}
+
+playerdata error:before{
+	content: "Error: ";
+	color: red;
+}
+
+playerdata error code,playerdata error message{
+	display: block;
+}
+playerdata error code:before{
+	content: "code: ";
+	font-weight: bold;
+}
+playerdata error message:before{
+	content: "message: ";
+	font-weight: bold;
+}

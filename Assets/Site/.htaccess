@@ -1,0 +1,34 @@
+RewriteEngine On
+#RewriteBase /static/uttracker/
+#http://stackoverflow.com/a/21063276
+RewriteCond %{REQUEST_URI}::$1 ^(.*?/)(.*)::\2$
+RewriteRule ^(.*)$ - [E=BASE:%1]
+
+#RewriteRule ^css/(.*) ../Global/css/$1 [L,QSA]
+#RewriteRule ^js/(.*) ../Global/js/$1 [L,QSA]
+RewriteRule ^img/(.*) ../Global/img/$1 [L,QSA]
+RewriteRule ^smiles/(.*) ../Global/smiles/$1 [L,QSA]
+RewriteRule ^icons/(.*) ../Global/icons/$1 [L,QSA]
+RewriteRule ^flags/(.*) ../Global/flags/$1 [L,QSA]
+
+#RewriteRule ^layout/projection=(.+)/(.+).fhd.png$ https://tracker.ut99.tk/nightly/wireframe/renderpolyfilled.php?map=$2&fhd&projmode=$1 [R=301,L,QSA]
+#RewriteRule ^layout/projection=(.+)/(.+).png$ https://tracker.ut99.tk/nightly/wireframe/renderpolyfilled.php?map=$2&projmode=$1 [R=301,L,QSA]
+#RewriteRule ^layout/(.+).fhd.png$ https://tracker.ut99.tk/nightly/wireframe/renderpolyfilled.php?map=$1&fhd [R=301,L,QSA]
+#RewriteRule ^layout/(.+).png$ https://tracker.ut99.tk/nightly/wireframe/renderpolyfilled.php?map=$1 [R=301,L,QSA]
+
+RewriteRule ^layout/projection=(.+)/(.+).fhd.png$ https://tracker.ut99.tk/nightly/wireframe/renderpolywithsprites.php?map=$2&fhd&projmode=$1 [R=301,L,QSA]
+RewriteRule ^layout/projection=(.+)/(.+).png$ https://tracker.ut99.tk/nightly/wireframe/renderpolywithsprites.php?map=$2&projmode=$1 [R=301,L,QSA]
+RewriteRule ^layout/(.+).fhd.png$ https://tracker.ut99.tk/nightly/wireframe/renderpolywithsprites.php?map=$1&fhd [R=301,L,QSA]
+RewriteRule ^layout/(.+).png$ https://tracker.ut99.tk/nightly/wireframe/renderpolywithsprites.php?map=$1 [R=301,L,QSA]
+
+
+RewriteRule ^layoutreport/(.+).png$ https://tracker.ut99.tk/nightly/wireframe/genReport.php?map=$1 [R=301,L,QSA]
+RewriteRule ^mapsshot/(.+)$ https://tracker.ut99.tk/nightly/utmp/sshots/$1 [R=301,L,QSA]
+RewriteRule ^jbbanner/(.+).jpg$ https://tracker.ut99.tk/nightly/utmp/jblogo.php?map=$1 [R=301,L,QSA]
+RewriteRule ^archive/(.+)$ https://tracker.ut99.tk/archive/$1 [R=301,L,QSA]
+
+#RewriteCond $2 !=php
+#RewriteRule (.+)\.([^\.]+)$ ../cdnProxy.php?file=uttracker/$1.$2 [L,QSA]
+
+
+

@@ -112,7 +112,7 @@
 		) ENGINE=InnoDB AUTO_INCREMENT=251 DEFAULT CHARSET=latin1";
 		
 	$dbTables['utt_info']="CREATE TABLE `utt_info` (
-		 `key` varchar(48) NOT NULL,
+		 `key` varchar(96) NOT NULL,
 		 `data` text,
 		 `private` boolean,
 		 PRIMARY KEY (`key`),

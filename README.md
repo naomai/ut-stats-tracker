@@ -15,7 +15,7 @@ about players and servers. Also, it presents some detailed informations
 about maps, including automatically generated map layouts. 
 The site used to be running at the address http://tracker.ut99.tk
 
-![A list of game servers](screenshot-exemple/fssRERg.jpg)
+![A site with huge logo, and a list of game servers](Screenshot-exemple/fssRERg.jpg)
 
 ## Requirements
 ### Web frontend

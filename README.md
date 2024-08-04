@@ -41,9 +41,9 @@ If you want to run Map Downloader, you'll also need:
 ### Configuration files
 Each component has its own separate file with configuration:
 - Web frontend:
-  `/appConfig.php`
+  `/appConfig.php` (remove .dist extension)
 - Server scanner: 
-  `/Scanner/bin/[buildType]/utt_updater3.ini`
+  `/Scanner/bin/[buildType]/utt_updater3.ini` (remove .dist extension)
 - UT Map Downloader:
   `/UTMP/mapdlcron2.php`
 - Wireframe renderer:

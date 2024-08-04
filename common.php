@@ -268,7 +268,7 @@
 	function serializename($nm){
 		$news="";
 		for ($i = 0; $i < strlen($nm); $i++):
-			$cx = ord($nm{$i});
+			$cx = ord($nm[$i]);
 			if (($cx >= 48 && $cx <= 57) || ($cx >= 65 && $cx <= 90) || ($cx >= 97 && $cx <= 122) || $cx == 61 || $cx == 91 || $cx == 93 || $cx == 95 || $cx == 123 || $cx == 125 || $cx == 40 || $cx == 41 || ($cx >= 43 && $cx <= 46) || $cx == 32 || $cx == 33 || $cx == 36 || $cx == 38 || $cx == 39 ):
 				$news .= chr($cx);
 			else:

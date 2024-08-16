@@ -1,2 +1,5 @@
 appConfig.php
 utt_updater3.ini
+Scanner\obj
+Scanner\.vs
+Installer/verify*.tmp

@@ -247,7 +247,7 @@ if(isset($_GET['serv'])){
 		
 		$blacklisted=isset($blx[$s['address']]);
 		
-		$srules=json_decode($s['rules'],true);
+		$srules=json_decode((string)$s['rules'],true);
 		
 		if(isset($s['gamename']) && $s['gamename']!='ut') {
 			unset($servstat[$k]);
@@ -452,7 +452,7 @@ if(isset($_GET['serv'])){
 		//$gt=implode("]<br>[",$gtypes);
 		$gt="";
 		foreach($gtypes as $gx){
-			if($gameTypes[$gx][0]===":") continue;
+			if(!isset($gameTypes[$gx]) || $gameTypes[$gx][0]===":") continue;
 			if(file_exists("$assetsPathLocal/bitmaps/gm-".strtolower($gx).".png")){
 				$gt.="<img src='$assetsPath/bitmaps/gm-".strtolower($gx).".png' alt='[$gx]' /><br>";
 			}else{

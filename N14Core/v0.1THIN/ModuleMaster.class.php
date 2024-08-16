@@ -12,7 +12,7 @@ abstract class Module{
 }
 
 class ModuleMaster{
-	
+	public $triggerInit;
 }
 
 class ModMasterExtensionManager{

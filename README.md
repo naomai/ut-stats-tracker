@@ -38,8 +38,22 @@ If you want to run Map Downloader, you'll also need:
 
 
 ## Installation
+Create a dedicated database on your MySQL/MariaDB server. This can be done easily with a tool like [PHPMyAdmin](https://github.com/phpmyadmin). I'm using name `utt` in the example. 
+
+Additionaly, add new user that will be accessing the database. In my example, `uttWeb`.
+
+**It's a good practice to create different database users for frontend, scanner, and map downloader.**
+Web frontend user only needs modification permissions for tables:
+- mapinfo: INSERT, UPDATE
+- mapdownloadqueue: INSERT
+- serverqueue: INSERT
+**For the time of installation, CREATE TABLE permission should also be granted to web frontend user.**
+
+Permissions needed for Map Downloader:
+- mapdownloadqueue: SELECT, DELETE
+
 ### Configuration files
-Each component has its own separate file with configuration:
+Edit config files for your instance. Each component has its own separate file with configuration:
 - Web frontend:
   `/appConfig.php` (remove .dist extension)
 - Server scanner: 
@@ -49,17 +63,9 @@ Each component has its own separate file with configuration:
 - Wireframe renderer:
   `/WireframeRenderer/RendererConfig.php`
 
-After you configure all components, create database tables using /Installer/index.php script. 
-Remember to grant CREATE permission to the user for the time of installation.
+After you configure all components, run installer script. To create database structure, use /Installer/index.php script. This is initiated from web, just navigate to:
 
-**It's a good practice to create different database users for scanner, frontend and map downloader.**
-Web frontend user only needs modification permissions for tables:
-- mapinfo: INSERT, UPDATE
-- mapdownloadqueue: INSERT
-- serverqueue: INSERT
-Permissions needed for Map Downloader:
-- mapdownloadqueue: SELECT, DELETE
-
+`https://<my-server>/Installer/index.php`
 
   
 ### Directories explained:

@@ -6,17 +6,19 @@
 	$appCredits="UTTWEB2 '13 '14 namonaki14, WaldoMG; contact: namonaki [at] mm.pl";
 	
 	// App location (URL)
-	$appHost = "blackmore.no-ip.pl";
+	$appHost = "localhost";
 	$appPath = "/UTTrackerPub";
 	$appUrlProto = "http";
 	$appUrl = $appUrlProto.'://'.$appHost.$appPath;
 	
 	// Host for cookies
-	$site_cookie_host='blackmore.no-ip.pl';
+	$site_cookie_host='localhost';
 	
-	// URL paths to static cloudflare stuff
-	$assetsPath = "//blackmore.no-ip.pl/UTTrackerPub/Assets/Site"; // /Assets/Site/
-	$assetsGenericPath = "//blackmore.no-ip.pl/UTTrackerPub/Assets/Global";    // /Assets/Global/
+	// External paths for static files
+	// You can use separate domain for CDN like CloudFlare
+	$cdnDomain = "localhost";
+	$assetsPath = "//{$cdnDomain}/UTTrackerPub/Assets/Site"; // /Assets/Site/
+	$assetsGenericPath = "//{$cdnDomain}/UTTrackerPub/Assets/Global";    // /Assets/Global/
 
 	// Local path for static files
 	$assetsPathLocal=__DIR__."/Assets/Site"; // /Assets/Site/
@@ -27,13 +29,9 @@
 	/* DATABASE CONFIG */
 	$statdb_host="localhost";
 	$statdb_user="uttWeb";
-	$statdb_pass="HelloMyNameIsJason";
+	$statdb_pass="EditMeEditMe";
 	$statdb_db="utt";
 	
-	/*$statdb_host="localhost";
-	$statdb_user="uttTestDb";
-	$statdb_pass="orbitwhite";
-	$statdb_db="utt_test";*/
 	$I_Modified_The_Database_Config = false; // set to true if values above are correct
 	
 	/* DATA FOLDER */
@@ -64,7 +62,7 @@
 	
 	
 	// Location of server scanner config ini (optional)
-	$config_ini=__DIR__ . "\\VB10\\updater_v3\\ConsoleApplication1\\bin\\Debug\\utt_updater3.ini";
+	$config_ini=__DIR__ . "\\Scanner\\bin\\Debug\\utt_updater3.ini";
 	
 	// display benchmarking checkpoints
 	$debug_checkpoint=false;
@@ -99,8 +97,6 @@
 		
 	const UTT_BUILD=58;
 	const UTT_MAPREPORT_VER=57;
-	
-	error_reporting(E_ALL);
 	
 	$appTables = array(
 		'trk.player.history'=>"playerhistory",

@@ -54,12 +54,12 @@
 		 `address` text,
 		 `name` text,
 		 `rules` text,
-		 `lastscan` int(11) NOT NULL,
-		 `lastrfupdate` int(11) NOT NULL,
-		 `rfscore` int(11) NOT NULL,
-		 `uplayers` int(11) NOT NULL,
-		 `country` varchar(3) NOT NULL,
-		 `gamename` varchar(20) NOT NULL,
+		 `lastscan` int(11),
+		 `lastrfupdate` int(11),
+		 `rfscore` int(11),
+		 `uplayers` int(11),
+		 `country` varchar(3),
+		 `gamename` varchar(20),
 		 PRIMARY KEY (`serverid`)
 		) ENGINE=InnoDB DEFAULT CHARSET=latin1";
 
@@ -68,6 +68,7 @@
 		 `serverid` int(11) DEFAULT NULL,
 		 `date` int(11) DEFAULT NULL,
 		 `mapname` text,
+		 `gamecurrentid` int(11) DEFAULT NULL,
 		 PRIMARY KEY (`gameid`),
 		 KEY `sh_sid_idx` (`serverid`) USING HASH,
 		 KEY `sh_dat_idx` (`date`) USING BTREE,
@@ -77,11 +78,11 @@
 	$dbTables['playerstats']="CREATE TABLE `playerstats` (
 		 `playerid` int(11) NOT NULL,
 		 `serverid` int(11) NOT NULL,
-		 `time` int(11) NOT NULL,
-		 `numupdates` int(11) NOT NULL,
-		 `deaths` int(11) NOT NULL,
-		 `score` bigint(20) NOT NULL,
-		 `lastgame` int(11) NOT NULL,
+		 `time` int(11) DEFAULT 0,
+		 `numupdates` int(11) DEFAULT 0,
+		 `deaths` int(11) DEFAULT 0,
+		 `score` bigint(20) DEFAULT 0,
+		 `lastgame` int(11) DEFAULT 0,
 		 PRIMARY KEY (`serverid`,`playerid`),
 		 KEY `ps_sid_idx` (`serverid`),
 		 KEY `ps_pid_idx` (`playerid`)

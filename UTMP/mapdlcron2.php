@@ -3,28 +3,25 @@ require_once __DIR__ . "/../appConfig.php";
 /* CONFIG BELOW!!! */
 
 // UCC Location - you need to have a working UT installation
-define ("UCC_LOC","H:\\ut99serv\\System\\UCC.exe");
+define ("UCC_LOC","E:\\Users\\Bun\\Desktop\\games\\UnrealTournament\\UCC.exe");
 	
 // paste UT game installations for file lookups
 $gameInstallations=array(
-	"H:\\games\\UnrealTournament",
-	"H:\\games\\UnrealGold",
-	"H:\\games\\utdemo",
 	//"H:\\games\\quake", // lol
-	"H:\\ut99serv"
+	"E:\\Users\\Bun\\Desktop\\games\\UnrealTournament",
 );
 
 // all downloaded content will be copied to this folder
-$fileStorageDir = "H:\\ut99serv\\uttdownload";
+$fileStorageDir = "I:\\UTTDL";
 // location of UTMP
 $utmpDir = $utmpLoc;
 // temporary directory used for processing current map
 $tempDownloadDir = "$utmpDir/maps";
 
 // path of PHP executable
-$phpCliPath = "H:\\MICROSYF\\wamp\\bin\\php\\php5.5.11\\php";
+$phpCliPath = "C:\\wamp64\\bin\\php\\php8.2.5\\php";
 // location of php.ini - MUST BE CONFIGURED FOR CLI
-$phpCliConfigPath = "H:/GNIOTY_E/pn/php55.ini";
+$phpCliConfigPath = "C:\\wamp64\\bin\\php\\php8.2.5\\php.ini";
 
 // path to 7z.exe
 $sevenZPath = $utmpDir . "/7z.exe";
@@ -663,7 +660,7 @@ function unpackUNR($file){
 	//echo "' exec(\"" . $GLOBALS["sevenZPath"]. "\" e -y -r -o\"" . $GLOBALS['tempDownloadDir'] . "/\" \"$file\" *.*)\r\n";
 	exec ("\"" . $GLOBALS["sevenZPath"]. "\" e -y -r -o\"" . $GLOBALS['tempDownloadDir'] . "/\" \"$file\" *.*",$ret);
 	
-	//echo "7Z output: \r\n".implode("\r\n",$ret)."\r\n";
+	echo "7Z output: \r\n".implode("\r\n",$ret)."\r\n";
 	return $ret;
 }
 

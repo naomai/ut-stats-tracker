@@ -4,6 +4,7 @@ RewriteEngine On
 #http://stackoverflow.com/a/21063276
 RewriteCond %{REQUEST_URI}::$1 ^(.*?/)(.*)::\2$
 RewriteRule ^(.*)$ - [E=BASE:%1]
+Options -MultiViews
 
 #RewriteRule ^static/(.*)$ static/$1 [L,QSA]
 

@@ -22,7 +22,8 @@ namespace UTMDC\UTFilesCom{
 	}
 	
 	function prefetchForUrl($url,$fname,$recursive=false){
-		$urx="http://ut-files.com/index.php?dir=Maps/$url";
+		$urx="https://ut-files.com/index.php?dir=Maps/$url";
+		
 		$localDbFile=__DIR__ . "/../utfiles_$fname.txt";
 
 		$plx=prefetchArray($urx,$fname,$recursive?0:-1);
@@ -62,9 +63,13 @@ namespace UTMDC\UTFilesCom{
 		if($matc){
 			for($i=0; $i<$matc; $i++){
 				$pname=trim($matz[3][$i]);
-				if($pname=="Parent Directory") continue;
-				
+				//if($pname=="Parent Directory") continue;
 				$purl=getFullUrl($matz[1][$i],$url);
+
+				if(strlen($purl) < strlen($url)) {
+					// detect parent directory
+					continue;
+				}
 				
 				if(trim($matz[2][$i])=="dir") {
 					if($recursive!=-1){

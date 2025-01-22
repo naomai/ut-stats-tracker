@@ -1,4 +1,5 @@
 <?php
+global $utmpIntalled;
 
 class UTT_MapInfo{
 	public $reportVersion=0;
@@ -80,13 +81,17 @@ class UTT_MapInfo{
 		$this->rawReport = $mapReport;
 	}
 	protected function fetchDBMapInfo(){
+		
 		$statement = $this->pdo->prepare("SELECT * FROM mapinfo WHERE mapid=:mapId");
 		$statement->bindParam(":mapId", $this->internalId, PDO::PARAM_INT);
 		$statement->execute();
 		$mapInfo = $statement->fetch(PDO::FETCH_ASSOC);
 		unset($statement);
 		
+		
+
 		if(isset($mapInfo['downloadurl']) && $mapInfo['downloadurl']){
+			
 			$this->downloadUrl=$mapInfo['downloadurl'];
 		}else{
 			$isFrontend = true;
@@ -159,7 +164,6 @@ class UTT_MapInfo{
 		if($this->screenshotLoc == null){
 			$this->jobsFlags |= LAYOUTGEN_JOB_ALL;
 		}
-		
 		if($this->jobsFlags){
 			$this->scheduleMapJob($this->jobsFlags);
 		}
@@ -167,8 +171,8 @@ class UTT_MapInfo{
 	}
 	
 	protected function scheduleMapJob($jobType){
-		global $utmpIntalled;
-			if($utmpIntalled){
+		global $utmpInstalled;
+			if($utmpInstalled){
 			$statement = $this->pdo->prepare("INSERT INTO mapdownloadqueue SET `mapname`=:mapName,`jobType`=:jobType");
 			echo "ScheduleMapJob?mapName=".urlencode($this->mapName)."&jobType=$jobType";
 			$statement->bindParam(":mapName", $this->mapName);

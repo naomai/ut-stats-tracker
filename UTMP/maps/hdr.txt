@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Date: Wed, 11 Sep 2024 10:40:55 GMT
+Server: Apache
+Upgrade: h2,h2c
+Connection: Upgrade
+Last-Modified: Thu, 26 Jul 2012 15:26:06 GMT
+ETag: "600be-4c5bd36d0ff80"
+Accept-Ranges: bytes
+Content-Length: 393406
+Vary: User-Agent
+Content-Type: application/zip
+

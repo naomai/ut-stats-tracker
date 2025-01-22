@@ -23,7 +23,7 @@
 	require_once __DIR__."/N14Inc/Locale.php";
 	require_once __DIR__."/N14Inc/Pagi.php";
 
-	require_once N14CORE_LOCATION."/ModularApp.php";
+	//require_once N14CORE_LOCATION."/ModularApp.php";
 	//require_once "includes/dummylog.php";
 	
 	use \N14\GetText as GetText;

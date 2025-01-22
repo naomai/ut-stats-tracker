@@ -1,4 +1,6 @@
 <?php
+
+global $utmdcInstalled;
 if(isset($utmdcInstalled) && $utmdcInstalled){
 	// regular download
 	require_once __DIR__."/utmdc/sources/utfiles.php";
@@ -17,7 +19,7 @@ if(isset($utmdcInstalled) && $utmdcInstalled){
 		require_once __DIR__."/utmdc/sources/redirUM.php";
 		require_once __DIR__."/utmdc/sources/redirFuzzeh.php";
 		require_once __DIR__."/utmdc/sources/redirSnipersParadise.php";
-		require_once __DIR__."/utmdc/sources/redirFTP.php";
+		//require_once __DIR__."/utmdc/sources/redirFTP.php";
 	}
 
 
@@ -36,7 +38,7 @@ if(isset($utmdcInstalled) && $utmdcInstalled){
 		if(($url=UTMDC\RedirectFuzzeh\findPackageUrl($pak))!==false) return $url;
 		if(($url=UTMDC\RedirectSnipersParadise\findPackageUrl($pak))!==false) return $url;
 		if(($url=UTMDC\RedirectHaleysHotHouse\findPackageUrl($pak))!==false) return $url;
-		if(($url=UTMDC\RedirectFTP\findPackageUrl($pak))!==false) return $url;
+		//if(($url=UTMDC\RedirectFTP\findPackageUrl($pak))!==false) return $url;
 		return "";
 	}
 }else{

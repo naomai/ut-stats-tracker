@@ -24,12 +24,12 @@
 		include $GLOBALS['errhndFatalPage'];
 		exit;
 	}
-	
+	/*
 	try{
 		$utt_cfg = new N14\INICache($config_ini);
-	}catch(N14\INIException $exc){
+	}catch(N14\INIException $exc){*/
 		$utt_cfg = null;
-	}
+	//}
 	
 	$rplast=sqlquery("SELECT `data` FROM `utt_info` WHERE `key`=\"net.reaper.lastupdate\"",1)['data'];
 	 

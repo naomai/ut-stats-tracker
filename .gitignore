@@ -3,3 +3,6 @@ utt_updater3.ini
 Scanner/obj
 Scanner/.vs
 Installer/verify*.tmp
+UTMDC/*.txt
+UTMDC/*.html
+N14Data/*.json

@@ -1,21 +1,30 @@
 # Unreal Tournament Stats Tracker
-## Disclaimer
-This is an excercise project on data collection and analysis I made 
-between 2014-2016.
+## About
+Unreal Tournament Stats Tracker allows you to view various statistics 
+about players and servers. It also provides Point-Of-Interests maps - 
+automatically generated from countless levels created by UT community
+during last 20+ years.  
 
-The purpose of this repo is strictly archival. 
+![A site with huge logo, and a list of game servers](Screenshot-exemple/fssRERg.jpg)
+
+## Current development
+The project is being rewritten to utilize modern technologies. Aims to be more
+stable, and deployable in various environments. New version are developed at:
+
+- [uttracker-web](https://github.com/naomai/uttracker-web) - website (PHP, Laravel, Vue)
+- [uttracker-indexer](https://github.com/naomai/uttracker-indexer) - server data collector, formerly `ServerScanner` (VB.NET, C#)
+- [uttracker-poi](https://github.com/naomai/uttracker-downloader) - POI maps generator and level downloader (Python, PHP) 
+
+
+## Disclaimer
+This is an archival repo, containing old incarnation of the project. 
+It was an excercise on data collection and analysis I made between 2014-2016.
+The site used to be running at the address http://tracker.ut99.tk [[archive]](https://web.archive.org/web/20141022105035/http://tracker.ut99.tk/)
+ 
 **I strongly recommend against running it in production.** 
 There are probably tons of bugs and vulnerabilities present
 due to usage of ancient coding patterns. I cannot guarantee
-this will run in any modern environment. [10 reasons why the code sucks](#10-reasons-why-the-code-sucks)
-
-## About
-Unreal Tournament Stats Tracker allows you to view various statistics 
-about players and servers. Also, it presents some detailed informations 
-about maps, including automatically generated map layouts. 
-The site used to be running at the address http://tracker.ut99.tk
-
-![A site with huge logo, and a list of game servers](Screenshot-exemple/fssRERg.jpg)
+this will run in any modern environment. [10 reasons why the code is a mess](#10-reasons-why-the-code-is-a-mess)
 
 ## Requirements
 ### Web frontend
@@ -82,7 +91,7 @@ After you configure all components, run installer script. To create database str
     Also, the directory of Map Downloader.
 - WireframeRenderer - script creating map layout images from T3D files
 
-## 10 reasons why the code sucks
+## 10 reasons why the code is a mess
 AKA Why it was nice from the user side, but a future maintainer's nightmare.
 
 1. No project structure whatsoever - `common.php` and other gigantic files, containing mixed procedural code, function definitions and much too much random things.

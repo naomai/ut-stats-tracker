@@ -19,7 +19,7 @@ function sqlcreate($host,$user,$pass,$db,$isMain=true){ // 2009-04
 	
 	try{
 		$sqlconn=new PDO("mysql:host=$host;dbname=$db;charset=utf8",$user,$pass);
-		$sqlconn->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
+		//$sqlconn->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
 	}catch(Exception $e){
 		sqlerr("OPEN", $e->getMessage());
 	}
@@ -136,7 +136,7 @@ function sqlquery($query, $limit=null,$handle=null,$fetchType=PDO::FETCH_ASSOC) 
 	return true;
 }
 
-function sqlquerysafe($query, array $params=null, $limit=0) {
+function sqlquerysafe($query, array $params=null, $limit=null) {
 	global $sqcons,$sqlqueries;
 	
 	$handle=key($sqcons);
@@ -154,18 +154,17 @@ function sqlquerysafe($query, array $params=null, $limit=0) {
 	}
 	$arr = $stm->fetchAll(PDO::FETCH_ASSOC);
 
-	if ( $limit !== 0)
-	{
-
-		if($limit==1){
-			reset($arr);
-			return current($arr);
-		}
-		
-		return $arr;
+	if ( $limit === 0) {
+		return true;
 	}
-	
-	return true;
+	if(count($arr) == 0){
+		return [];
+	}
+
+	if($limit==1){
+		return $arr[0];
+	}
+	return $arr;
 }
 
 function sqlexec($query,$handle=null){ // 2009-03 NEW
@@ -268,6 +267,18 @@ function sqlite_escape_string_like($s)
 {
     return str_replace(array("_","[","*","%"), array("\_","\[","%","\%"),SQLite3::escapeString ($s));
 } 
+
+function sqlDateToUts(string $dateString) : int {
+	static $tzUtc = new DateTimeZone("UTC");
+	$dt = DateTime::createFromFormat("Y-m-d H:i:s", $dateString, $tzUtc);
+	return $dt->getTimestamp();
+}
+
+function sqlUtsToDate(int $unixTimestamp) : string {
+	static $tzUtc = new DateTimeZone("UTC");
+	$dt = DateTime::createFromFormat("U", $unixTimestamp, $tzUtc);
+	return $dt->format("Y-m-d H:i:s");
+}
   
 function sqlerr($query="?", $func="nieznanafunkcja", $writetolog=1, $line=__LINE__, $file=__FILE__)
 {

@@ -1301,7 +1301,10 @@
 	}
 	
 	function loadCountryNames(){
-		$isoFile = file_exists("locale/iso-3166.".GetText\getlocale().".json") ? "locale/iso-3166.".GetText\getlocale().".json" : "iso-3166.default.json";
+		$localePath = "./Locale";
+		$isoFile = file_exists($localePath."/iso-3166.".GetText\getlocale().".json") 
+			? $localePath."/iso-3166.".GetText\getlocale().".json" 
+			: $localePath."/iso-3166.default.json";
 		$cn = json_decode(file_get_contents($isoFile),true);
 		$result=array();
 		foreach($cn as $c){

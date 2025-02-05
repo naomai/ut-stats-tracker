@@ -3,23 +3,23 @@
 global $utmdcInstalled;
 if(isset($utmdcInstalled) && $utmdcInstalled){
 	// regular download
-	require_once __DIR__."/utmdc/sources/utfiles.php";
-	require_once __DIR__."/utmdc/sources/medor.php";
-	require_once __DIR__."/utmdc/sources/dawn.php";
-	require_once __DIR__."/utmdc/sources/destination.php";
-	require_once __DIR__."/utmdc/sources/gamefront.php";
-	require_once __DIR__."/utmdc/sources/celticwarriors.php";
-	require_once __DIR__."/utmdc/sources/other.php";
-	require_once __DIR__."/utmdc/sources/unrealtexture.php";
-	require_once __DIR__."/utmdc/sources/filesize.php";
+	require_once __DIR__."/UTMDC/sources/utfiles.php";
+	require_once __DIR__."/UTMDC/sources/medor.php";
+	require_once __DIR__."/UTMDC/sources/dawn.php";
+	require_once __DIR__."/UTMDC/sources/destination.php";
+	require_once __DIR__."/UTMDC/sources/gamefront.php";
+	require_once __DIR__."/UTMDC/sources/celticwarriors.php";
+	require_once __DIR__."/UTMDC/sources/other.php";
+	require_once __DIR__."/UTMDC/sources/unrealtexture.php";
+	require_once __DIR__."/UTMDC/sources/filesize.php";
 
 	// redirect servers
 	if(!isset($isFrontend)){
-		require_once __DIR__."/utmdc/sources/redirHaleys.php";
-		require_once __DIR__."/utmdc/sources/redirUM.php";
-		require_once __DIR__."/utmdc/sources/redirFuzzeh.php";
-		require_once __DIR__."/utmdc/sources/redirSnipersParadise.php";
-		//require_once __DIR__."/utmdc/sources/redirFTP.php";
+		require_once __DIR__."/UTMDC/sources/redirHaleys.php";
+		require_once __DIR__."/UTMDC/sources/redirUM.php";
+		require_once __DIR__."/UTMDC/sources/redirFuzzeh.php";
+		require_once __DIR__."/UTMDC/sources/redirSnipersParadise.php";
+		//require_once __DIR__."/UTMDC/sources/redirFTP.php";
 	}
 
 

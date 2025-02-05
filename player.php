@@ -50,7 +50,7 @@
 	}*/
 	
 	$pid=(int)$_GET['id'];
-	$pi=sqlquery("SELECT * FROM playerinfo WHERE id=$pid LIMIT 1",1);	
+	$pi=sqlquery("SELECT * FROM players WHERE id=$pid LIMIT 1",1);	
 	
 	if($pi['name']=="") error404("UTT'playerid:$pid'");
 	
@@ -61,11 +61,15 @@
 	}
 	
 	
-	$phx = sqlquery("SELECT playerstats . * , serverinfo.name AS `sname`  , serverinfo.address AS `address` , serverinfo.rules AS `rules` , serverhistory.mapname AS `mapname` , serverhistory.date AS `lastupdate`
-		FROM playerstats
-		LEFT JOIN serverinfo ON serverinfo.serverid = playerstats.serverid
-		LEFT JOIN serverhistory ON serverhistory.gameid = playerstats.lastgame
-		WHERE playerid = $pid");
+	$phx = sqlquerysafe("SELECT player_stats . * , servers.name AS `sname`, 
+			servers.address_game AS `address`, servers.address_query AS `address_query`, servers.variables AS `rules` , 
+			server_matches.map_name AS `mapname` , server_matches.start_time AS `lastupdate`
+		FROM player_stats
+		LEFT JOIN servers ON servers.id = player_stats.server_id
+		LEFT JOIN server_matches ON server_matches.id = player_stats.last_match_id
+		WHERE player_id = :pid", 
+		['pid'=>$pid]
+	);
 	
 	// '14-07-16 rewritting the monsters
 	/*$ph=sqlquery("
@@ -216,23 +220,35 @@ if(isset($_GET['id'])){
 			$gamemodeHours = array();
 			
 			foreach($phx as $l){
-				$sein=$l['serverid'];
+				$sein=$l['server_id'];
 				
 				$srules = json_decode($l['rules'],true);
 				$tags = getServerTags($srules,SERVERTAGS_GAMEMODE);
 				
 				if(!isset($gamemodeHours[$tags[0]])) $gamemodeHours[$tags[0]]=0;
-				$gamemodeHours[$tags[0]] += $l['time'];
+				$gamemodeHours[$tags[0]] += $l['game_time'];
 								
 				//if($sein != abs(crc32($l['address']))) continue; //workaround for a weird bug, sometimes $ph contains wrong server ids
 				if(!isset($sez[$sein])){
-					$sez[$sein]=array("name"=>$l['sname'],"serverid"=>$l['serverid'],"address"=>$l['address'],"time"=>0,"avgp"=>0,"tf"=>0,"last"=>0,"pings"=>array(),'d'=>0,'lg'=>0);
+					$sez[$sein]=array(
+						"name"=>$l['sname'],
+						"serverid"=>$l['server_id'],
+						"address"=>$l['address'],
+						"address_query"=>$l['address_query'],
+						"time"=>0,
+						"avgp"=>0,
+						"tf"=>0,
+						"last"=>0,
+						"pings"=>array(),
+						'd'=>0,
+						'lg'=>0
+					);
 				}
 				//$sez[$sein]['pings'][] = round($l['pingsum']/$l['numupdates']);
-				$skinname=strtolower($pi['skindata']);
+				$skinname=strtolower($pi['skin_data']);
 				
 				$sez[$sein]['tf'] += $l['score'];
-				$sez[$sein]['time']+=$l['time'];
+				$sez[$sein]['time']+=$l['game_time'];
 				$sez[$sein]['d']+=$l['deaths'];
 				/*if($sez[$sein]['lg']<$l['gameid']){
 					$sez[$sein]['lg']=$l['gameid'];
@@ -273,7 +289,7 @@ if(isset($_GET['id'])){
 			else:*/
 				//echo "Skin: ".$last[8]." / ".$last[9]." / ".$last[10]."<br>\n";
 				//echo "Skin: ".key($skins)."<br>\n";
-				list($mesh,$skin,$face)=explode("|",$pi['skindata']);
+				list($mesh,$skin,$face)=explode("|",$pi['skin_data']);
 				if($fabs){
 					echo "<img src=\"" . maklink(LSTATICFILE,"tpb.jpg") . "\" class=\"uttr_skin imgleft\" alt=\"tpb\" />";
 				}else{
@@ -304,30 +320,35 @@ if(isset($_GET['id'])){
 				$alltimeonline=0;
 				foreach($phx as $pm){
 					//if(!isset($favmaps[$pm['mapname']])) $favmaps[$pm['mapname']]=array('games'=>array(),'time'=>0);
-					if(!isset($favservs[$pm['serverid']])) $favservs[$pm['serverid']]=array('games'=>array(),'time'=>0);
+					if(!isset($favservs[$pm['server_id']])) $favservs[$pm['server_id']]=array('games'=>array(),'game_time'=>0);
 					/*$favmaps[$pm['mapname']]['name']=$pm['mapname'];
 					$favmaps[$pm['mapname']]['games'][$pm['gameid']]=true;
 					//$favmaps[$pm['mapname']]['time'] += $pm['lastupdate']-$pm['enterdate'];
 					$favmaps[$pm['mapname']]['time'] += $pm['time'];*/
 					
-					$favservs[$pm['serverid']]['serverid']=$pm['serverid'];
-					$favservs[$pm['serverid']]['address']=$pm['address'];
-					$favservs[$pm['serverid']]['name']=$pm['sname'];
-					//$favservs[$pm['serverid']]['games'][$pm['gameid']]=true;
-					//$favservs[$pm['serverid']]['time'] += $pm['lastupdate']-$pm['enterdate'];
-					$favservs[$pm['serverid']]['time'] += $pm['time'];
+					$favservs[$pm['server_id']]['server_id']=$pm['server_id'];
+					$favservs[$pm['server_id']]['address']=$pm['address'];
+					$favservs[$pm['server_id']]['address_query']=$pm['address_query'];
+					$favservs[$pm['server_id']]['name']=$pm['sname'];
+					//$favservs[$pm['server_id']]['games'][$pm['gameid']]=true;
+					//$favservs[$pm['server_id']]['time'] += $pm['lastupdate']-$pm['enterdate'];
+					$favservs[$pm['server_id']]['game_time'] += $pm['game_time'];
 					
 					//$alltimeonline+=$pm['lastupdate']-$pm['enterdate'];
-					$alltimeonline+=$pm['time'];
+					$alltimeonline+=$pm['game_time'];
 				}
-				usort($favmaps,function($a,$b){return $b['time']-$a['time'];});
-				usort($favservs,function($a,$b){return $b['time']-$a['time'];});
+				usort($favmaps,function($a,$b){return $b['game_time']-$a['game_time'];});
+				usort($favservs,function($a,$b){return $b['game_time']-$a['game_time'];});
 				//print_r($favmaps);
 
 				echo "<h2 class='clear'>".__('Various stats')."</h2>\n";
 				echo "<b>" . __('All time online') . "</b>: " . formattime($alltimeonline/3600)."<br>";
 				//echo "<b>" . __('Favorite server') . "</b>: <a href='" .maklink(LSERVER,$favservs[0]['serverid'],$favservs[0]['name'],"pf")."'>" . htmlspecialchars(unRetardizeServerName($favservs[0]['name'])) . "</a> (" . sprintf(__('%2$s'),count($favservs[0]['games']),formattime($favservs[0]['time']/3600)).")<br>";
-				echo "<b>" . __('Favorite server') . "</b>: <a href='" .maklinkHtml(LSERVER,$favservs[0],null,"pf")."'>" . htmlspecialchars(unRetardizeServerName($favservs[0]['name'])) . "</a> (" . sprintf(__('%2$s'),0,formattime($favservs[0]['time']/3600)).")<br>";
+				echo "<b>" . __('Favorite server') . "</b>: 
+					<a href='" .maklinkHtml(LSERVER,$favservs[0],null,"pf")."'>" . 
+					htmlspecialchars(unRetardizeServerName($favservs[0]['name'])) . "
+					</a> 
+					(" . sprintf(__('%2$s'),0,formattime($favservs[0]['game_time']/3600)).")<br>";
 				//echo "<b>" . __('Favorite map') . "</b>: <a href='" . maklink(LMAP,null,$favmaps[0]['name'],"pf") . "'>{$favmaps[0]['name']}</a> (" . sprintf(__('%2$s'),count($favmaps[0]['games']),formattime($favmaps[0]['time']/3600)).")<br>";
 				foreach($gamemodeHours as $gs=>$gh){
 					if($gh<5*60*60) unset($gs);
@@ -374,12 +395,16 @@ if(isset($_GET['id'])){
 
 				echo "<h2>Last games</h2>\r\n";
 				
-				$hist=sqlquery("
-					SELECT *, serverinfo.name AS `sname`,serverinfo.address AS `address`,serverinfo.rules AS `rules`,serverhistory.mapname AS `mapname` FROM playerhistory 
-					LEFT JOIN serverinfo ON serverinfo.serverid=playerhistory.serverid 
-					LEFT JOIN serverhistory ON serverhistory.gameid=playerhistory.gameid 
-					WHERE id=$pid
-				");
+				$hist=sqlquerysafe("
+					SELECT *, servers.name AS `sname`,servers.address_game AS `address`,
+						servers.variables AS `rules`,server_matches.map_name AS `mapname` 
+					FROM player_logs 
+					LEFT JOIN servers ON servers.id=player_logs.server_id 
+					LEFT JOIN server_matches ON server_matches.id=player_logs.match_id 
+					WHERE player_logs.player_id=:pid
+					", 
+					['pid'=>$pid]
+				);
 				
 				if(count($hist)){
 				
@@ -395,7 +420,7 @@ if(isset($_GET['id'])){
 					$cx=$tt->addColumn("sname",__("Server"));
 					$cx->contentType=TTCI::CONTENT_HTML;
 					
-					$cx=$tt->addColumn("scorethismatch",__("Frags"));
+					$cx=$tt->addColumn("score_this_match",__("Frags"));
 					$cx->contentType=TTCI::CONTENT_HTML;
 					
 					$cx=$tt->addColumn("rules");
@@ -403,13 +428,13 @@ if(isset($_GET['id'])){
 					$cx->hidden=true;
 					
 					$tt->setRowPreprocessorCallback(function($row){
-						$row['sortable_enterdate']=$row['enterdate'];
-						$row['enterdate']=uttdateFmt($row['enterdate']);
+						$row['sortable_enterdate']=sqlDateToUts($row['first_seen_time']);
+						$row['enterdate']=uttdateFmt(sqlDateToUts($row['first_seen_time']));
 						$row['mapname']="<a href='".maklinkHtml(LMAP,"",$row['mapname'])."'>".htmlspecialchars($row['mapname'])."</a>";
 						$row['sname']="<a href='".maklinkHtml(LSERVER,$row,null)."'>".htmlspecialchars(unRetardizeServerName($row['sname']))."</a>";
 						$srules = json_decode($row['rules'],true);
 						//$row['scorethismatch'] .= $srules['fraglimit'];
-						$row['scorethismatch'] .= (isset($srules['fraglimit']) && $srules['fraglimit']>0 && $row['scorethismatch'] == $srules['fraglimit'] ? " &#x2776;":""); 
+						$row['score_this_match'] .= (isset($srules['fraglimit']) && $srules['fraglimit']>0 && $row['score_this_match'] == $srules['fraglimit'] ? " &#x2776;":""); 
 						
 						return $row;
 					});
@@ -525,7 +550,7 @@ if(isset($_GET['id'])){
 			$likePart.="\"";
 			//echo $likePart;
 			$simqw="SELECT * 
-				FROM playerinfo
+				FROM players
 				WHERE ".$likePart."";
 
 				//echo $simqw;
@@ -549,7 +574,7 @@ if(isset($_GET['id'])){
 				foreach($siplX as $d){
 					if($d['lev']>strlen($d['name'])*0.75) continue;
 					if($d['id']==$pi['id']) continue;
-					list($ms,$sk,$fc)=explode("|",$d['skindata']);
+					list($ms,$sk,$fc)=explode("|",$d['skin_data']);
 					$flag=getflag($d['country']);
 					echo "<div class='splcell'>\n<div class='splavatar'>".getSkinImage($ms,$sk,$fc)."</div>\n<div class='splinfo'>\n<a href='".maklink(LPLAYER,$d['id'],$d['name'],"ps")."' class='plist_player utt-avatar'><span class='itemname'>$flag".htmlspecialchars($d['name'])."</span>\n";
 					echo "</a>\n</div>\n</div>\n";

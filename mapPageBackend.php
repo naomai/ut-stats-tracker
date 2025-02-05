@@ -63,7 +63,7 @@ class UTT_MapInfo{
 		$this->size['z']     = round(isset($mapReport['mapsizeZ'])      ? $mapReport['mapsizeZ']:0);
 		$this->brushCountAdd =  isset($mapReport['brushcsgaddcount'])   ? $mapReport['brushcsgaddcount']:0;
 		$this->brushCountSub =  isset($mapReport['brushcsgsubcount'])   ? $mapReport['brushcsgsubcount']:0;
-		$this->zoneCount     =  isset($mapReport['zones'])              ? count($mapReport['zones']):0;
+		$this->zoneCount     =  isset($mapReport['zone_count'])              ? count($mapReport['zone_count']):0;
 		$this->lightWattage  = round(isset($mapReport['lightWattage'])  ? $mapReport['lightWattage']:0);
 		$this->textureCount  = round(isset($mapReport['usedTextures'])  ? count($mapReport['usedTextures']):0);
 		$this->classCount    = round(isset($mapReport['actorsCount'])   ? count($mapReport['actorsCount']):0);
@@ -82,7 +82,7 @@ class UTT_MapInfo{
 	}
 	protected function fetchDBMapInfo(){
 		
-		$statement = $this->pdo->prepare("SELECT * FROM mapinfo WHERE mapid=:mapId");
+		$statement = $this->pdo->prepare("SELECT * FROM maps WHERE id=:mapId");
 		$statement->bindParam(":mapId", $this->internalId, PDO::PARAM_INT);
 		$statement->execute();
 		$mapInfo = $statement->fetch(PDO::FETCH_ASSOC);
@@ -90,9 +90,9 @@ class UTT_MapInfo{
 		
 		
 
-		if(isset($mapInfo['downloadurl']) && $mapInfo['downloadurl']){
+		if(isset($mapInfo['download_url']) && $mapInfo['download_url']){
 			
-			$this->downloadUrl=$mapInfo['downloadurl'];
+			$this->downloadUrl=$mapInfo['download_url'];
 		}else{
 			$isFrontend = true;
 			require_once "ut_map_lookup.php";
@@ -185,14 +185,18 @@ class UTT_MapInfo{
 		return $this->pdo->prepare(
 			"INSERT INTO mapinfo SET 
 			   mapID=:mid,mapname=:mapname,
-			   reportVersion=:reportVer,author=:authr,downloadurl=:url,sizeX=:sizex,sizeY=:sizey,sizeZ=:sizez,
-			   brushCSGADD=:bca,brushCSGSUB=:bcs,zones=:zones,lightwattage=:lw,numTextures=:textures,numClasses=:classes ");
+			   reportVersion=:reportVer,author=:authr,download_url=:url,
+			   bound_size_x=:sizex,bound_size_y=:sizey,bound_size_z=:sizez,
+			   brush_count_additive=:bca,brush_count_subtractive=:bcs,
+			   zone_count=:zones,light_wattage=:lw,texture_count=:textures,class_count=:classes ");
 	}
 	protected function getStatementForMapInfoUpdate(){
 		return $this->pdo->prepare("
 			UPDATE mapinfo SET 
-			   reportVersion=:reportVer,author=:authr,downloadurl=:url,sizeX=:sizex,sizeY=:sizey,sizeZ=:sizez,
-			   brushCSGADD=:bca,brushCSGSUB=:bcs,zones=:zones,lightwattage=:lw,numTextures=:textures,numClasses=:classes 
+			   reportVersion=:reportVer,author=:authr,download_url=:url,
+			   bound_size_x=:sizex,bound_size_y=:sizey,bound_size_z=:sizez,
+			   brush_count_additive=:bca,brush_count_subtractive=:bcs,
+			   zone_count=:zones,light_wattage=:lw,texture_count=:textures,class_count=:classes 
 			WHERE mapid=:mid; --:mapname");
 	}
 	
@@ -214,27 +218,27 @@ class UTT_MapInfo{
 	}
 	
 	protected function isDBMapInfoValid(){
-		return 	$this->dbMapInfo['downloadurl'] == $this->downloadUrl && 
+		return 	$this->dbMapInfo['download_url'] == $this->downloadUrl && 
 				$this->dbMapInfo['reportVersion'] == $this->reportVersion && 
-				$this->dbMapInfo['sizeX'] == $this->size['x'] && 
-				$this->dbMapInfo['brushCSGADD'] == $this->brushCountSub && 
+				$this->dbMapInfo['bound_size_x'] == $this->size['x'] && 
+				$this->dbMapInfo['brush_count_additive'] == $this->brushCountAdd && 
 				$this->dbMapInfo['author'] == $this->author && 
-				$this->dbMapInfo['zones'] == $this->zoneCount;
+				$this->dbMapInfo['zone_count'] == $this->zoneCount;
 	}
 	
 	public function findSimilarMaps(){
 		$sql = "SELECT * FROM mapinfo WHERE 
-			sizeX <> 0 AND (
-			sizeX BETWEEN :sizeXF AND :sizeXC OR
-			sizeY BETWEEN :sizeYF AND :sizeYC OR
-			sizeZ BETWEEN :sizeZF AND :sizeZC OR
-			brushCSGADD BETWEEN :brushCSGADDF AND :brushCSGADDC OR
-			brushCSGSUB BETWEEN :brushCSGSUBF AND :brushCSGSUBC OR
-			lightwattage BETWEEN :lightwattageF AND :lightwattageC";
+			bound_size_x <> 0 AND (
+			bound_size_x BETWEEN :sizeXF AND :sizeXC OR
+			bound_size_y BETWEEN :sizeYF AND :sizeYC OR
+			bound_size_z BETWEEN :sizeZF AND :sizeZC OR
+			brush_count_additive BETWEEN :brushCSGADDF AND :brushCSGADDC OR
+			brush_count_subtractive BETWEEN :brushCSGSUBF AND :brushCSGSUBC OR
+			light_wattage BETWEEN :lightwattageF AND :lightwattageC";
 		if($this->reportVersion>=53){
 			$sql .= " OR
-				numTextures BETWEEN :numTexturesF AND :numTexturesC OR
-				numClasses BETWEEN :numClassesF AND :numClassesC";
+				texture_count BETWEEN :numTexturesF AND :numTexturesC OR
+				class_count BETWEEN :numClassesF AND :numClassesC";
 		}
 		$sql .= ") AND mapid <> :mapId";
 		$statement = $this->pdo->prepare($sql);
@@ -269,15 +273,15 @@ class UTT_MapInfo{
 			$similaritySecond=0; // [0-3]
 			
 			// '14-12-17 it's symmetrical now!
-			if($mapSize['x']    !=0 && ($diff=(abs($mapX['sizeX'] - $mapSize['x'])         /($mapX['sizeX']+$mapSize['x'])*2))  	       < 0.5) {$diff=1-pow($diff-1,2);$similarity+=(1-$diff)*2.5;              }
-			if($mapSize['y']    !=0 && ($diff=(abs($mapX['sizeY'] - $mapSize['y'])         /($mapX['sizeY']+$mapSize['y'])*2)) 	       < 0.5) {$diff=1-pow($diff-1,2);$similarity+=(1-$diff)*2.5;              }
-			if($mapSize['z']    !=0 && ($diff=(abs($mapX['sizeZ'] - $mapSize['z'])         /($mapX['sizeZ']+$mapSize['z'])*2))          < 0.5) {$diff=1-pow($diff-1,2);$similarity+=(1-$diff)*1.8;              }
-			if($this->brushCountAdd      > 0 && ($diff=(abs($mapX['brushCSGADD']  - $this->brushCountAdd) / ($mapX['brushCSGADD']  + $this->brushCountAdd)*2)) < 0.5) {$diff=1-pow($diff-1,2);$similaritySecond+=(1-$diff)*1.0;        }
-			if($this->brushCountSub      > 0 && ($diff=(abs($mapX['brushCSGSUB']  - $this->brushCountSub) / ($mapX['brushCSGSUB']  + $this->brushCountSub)*2)) < 0.5) {$diff=1-pow($diff-1,4);$similaritySecond+=(1-$diff)*1.3;        }
-			if($this->zoneCount          > 0 && ($diff=(abs($mapX['zones']        - $this->zoneCount)     / ($mapX['zones']        + $this->zoneCount    )*2)) < 0.5) {$diff=1-pow($diff-1,2);$similaritySecond+=(1-$diff)*0.7;        }
-			if($this->lightWattage       > 0 && ($diff=(abs($mapX['lightwattage'] - $this->lightWattage)  / ($mapX['lightwattage'] + $this->lightWattage )*2)) < 0.5) {$diff=1-pow($diff-1,2);$similarity+=(1-$diff)*1.2;              }
-			if($this->textureCount       > 0 && ($diff=(abs($mapX['numTextures']  - $this->textureCount)  / ($mapX['numTextures']  + $this->textureCount )*2)) < 0.5) {$diff=1-pow($diff-1,4);$similaritySecond+=(1-$diff)*1.7;        }
-			if($this->classCount         > 0 && ($diff=(abs($mapX['numClasses']   - $this->classCount)    / ($mapX['numClasses']   + $this->classCount   )*2)) < 0.5) {$diff=1-pow($diff-1,2);$similaritySecond+=(1-$diff)*1.3;        }
+			if($mapSize['x']    !=0 && ($diff=(abs($mapX['bound_size_x'] - $mapSize['x'])         /($mapX['bound_size_x']+$mapSize['x'])*2))  	       < 0.5) {$diff=1-pow($diff-1,2);$similarity+=(1-$diff)*2.5;              }
+			if($mapSize['y']    !=0 && ($diff=(abs($mapX['bound_size_y'] - $mapSize['y'])         /($mapX['bound_size_y']+$mapSize['y'])*2)) 	       < 0.5) {$diff=1-pow($diff-1,2);$similarity+=(1-$diff)*2.5;              }
+			if($mapSize['z']    !=0 && ($diff=(abs($mapX['bound_size_z'] - $mapSize['z'])         /($mapX['bound_size_z']+$mapSize['z'])*2))          < 0.5) {$diff=1-pow($diff-1,2);$similarity+=(1-$diff)*1.8;              }
+			if($this->brushCountAdd      > 0 && ($diff=(abs($mapX['brush_count_additive']  - $this->brushCountAdd) / ($mapX['brush_count_additive']  + $this->brushCountAdd)*2)) < 0.5) {$diff=1-pow($diff-1,2);$similaritySecond+=(1-$diff)*1.0;        }
+			if($this->brushCountSub      > 0 && ($diff=(abs($mapX['brush_count_subtractive']  - $this->brushCountSub) / ($mapX['brush_count_subtractive']  + $this->brushCountSub)*2)) < 0.5) {$diff=1-pow($diff-1,4);$similaritySecond+=(1-$diff)*1.3;        }
+			if($this->zoneCount          > 0 && ($diff=(abs($mapX['zone_count']        - $this->zoneCount)     / ($mapX['zone_count']        + $this->zoneCount    )*2)) < 0.5) {$diff=1-pow($diff-1,2);$similaritySecond+=(1-$diff)*0.7;        }
+			if($this->lightWattage       > 0 && ($diff=(abs($mapX['light_wattage'] - $this->lightWattage)  / ($mapX['light_wattage'] + $this->lightWattage )*2)) < 0.5) {$diff=1-pow($diff-1,2);$similarity+=(1-$diff)*1.2;              }
+			if($this->textureCount       > 0 && ($diff=(abs($mapX['texture_count']  - $this->textureCount)  / ($mapX['texture_count']  + $this->textureCount )*2)) < 0.5) {$diff=1-pow($diff-1,4);$similaritySecond+=(1-$diff)*1.7;        }
+			if($this->classCount         > 0 && ($diff=(abs($mapX['class_count']   - $this->classCount)    / ($mapX['class_count']   + $this->classCount   )*2)) < 0.5) {$diff=1-pow($diff-1,2);$similaritySecond+=(1-$diff)*1.3;        }
 			
 			$similarityPercent=($similarity+$similaritySecond)*0.07142857142857143; // VERY ADVANCED MAGIC, DON'T!! ask.
 			

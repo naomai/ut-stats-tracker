@@ -34,7 +34,7 @@
 		
 		$dbh=sqlcreate($statdb_host,$statdb_user,$statdb_pass,$statdb_db);
 		
-		$lastscan=sqlquery("SELECT data FROM utt_info WHERE `key`=\"net.reaper.lastupdate\"",1)['data'];
+		$lastscan=sqlquery("SELECT data FROM config_props WHERE `key`=\"utt.reaper.lastupdate\"",1)['data'];
 		
 		if(isset($_GET['redl']) && file_exists("$utmpLoc/sshots/{$mapid}.jpg")) {
 			unlink("$utmpLoc/sshots/{$mapid}.jpg");
@@ -42,13 +42,20 @@
 		}
 		
 		$pdoHandle=sqlgethandle($dbh);
-		$sq=$pdoHandle->prepare("SELECT sh.*, serverinfo.name, serverinfo.address, serverinfo.country FROM (SELECT * FROM serverhistory WHERE mapname=:map) AS sh LEFT JOIN serverinfo ON sh.serverid=serverinfo.serverid WHERE sh.date > ".(time()-86400*60)." AND serverinfo.lastscan > ".(time()-86400*14)." ORDER BY date DESC");
-		$sq->bindParam(":map",$mapname);
-		$sq->execute();
-
-		$msh=$sq->fetchAll(PDO::FETCH_ASSOC);
-
-		unset($sq);
+		$msh=sqlquerysafe("
+			SELECT sh.*, servers.name, servers.address_game, servers.country 
+			FROM (
+				SELECT * FROM server_matches WHERE map_name=:map
+			) AS sh 
+			LEFT JOIN servers 
+			 	ON sh.server_id=servers.id 
+			WHERE sh.start_time  > :starttime AND servers.last_success > :lastsuccess 
+			ORDER BY last_success DESC",
+		[
+			'map'=>$mapname,
+			'starttime'=>sqlUtsToDate(time()-86400*60),
+			'lastsuccess'=>sqlUtsToDate(time()-86400*14)
+		]);
 		$mid=abs(crc32(strtolower($mapname)));
 		
 		

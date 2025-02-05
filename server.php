@@ -78,11 +78,12 @@ if(isset($_GET['ip'])){
 	//$si=sqlquery("SELECT `name`,`address_game`, `address_query`,`name` as n,`address_query` as ip,`id` as sid,`variables`,`last_success`,`game_name` FROM servers WHERE `address_game`=$addr_req",1,$dbh);
 	
 	$si = sqlquerysafe(
-		"SELECT `name`,`address_game`, `address_query`,`name` as n,`address_query` as ip,`id` as sid,`variables`,`last_success`,`game_name` 
+		"SELECT `name`,`address_game`, `address_query`,`name`,`address_query` as ip,`id` as server_id,`variables`,`last_success`,`game_name` 
 		FROM servers WHERE `address_game`=:addr",
 		['addr'=>$addr_req],
 		1);
-	$sid = $si['sid'];
+
+	$sid = $si['server_id'];
 	
 	$sh=sqlquery("SELECT `map_name` as map, `id` FROM server_matches WHERE server_id=$sid ORDER BY id DESC limit 1",1,$dbh);
 
@@ -129,7 +130,7 @@ if(isset($_GET['ip'])){
 		}
 	}
 	
-	if($s['n']==""){
+	if($s['name']==""){
 		error404();
 	}
 	$expurl=maklink(LSERVER,$s);
@@ -157,7 +158,6 @@ if(isset($_GET['ip'])){
 	$si['gametype']=isset($srules['gametype'])?$srules['gametype']:"";
 	$si['mapname']=isset($srules['mapname'])?$srules['mapname']:"";
 	$si['gamever']=isset($srules['gamever'])?$srules['gamever']:"";
-	$si['name']=$si['n'];
 	$st=getServerTags($si);
 	$stInv = array_flip($st);
 	$isCompetitiveGame = isset($stInv['DM']) || isset($stInv['MH']);
@@ -180,62 +180,16 @@ if(isset($_GET['ip'])){
 
 	}
 	
-	$title=cp437toentity(htmlspecialchars(unRetardizeServerName($s['n'])))." - ";
-	printf($headerf,$title,$bclass,"View Server Stats, Player Ranks and more for server ".htmlspecialchars($s['n']).".");
-	
-	//T: 288 ms (lowest) - ~4000 ms (highest) <- rewrite!!
-	/*$pdxt=sqlquery("SELECT id,sum(numupdates) as `numupdates`,sum(deathsthismatch) as `deathsthismatch`,sum(scorethismatch) as `scorethismatch`,sum(time) as `time`,name,skin,country,lastupdate,team FROM (
-		SELECT ph.id as `id`,sum(ph.numupdates) as `numupdates`, 
-		sum(ph.deathsthismatch) as `deathsthismatch`, sum(ph.scorethismatch) as `scorethismatch`, max(ph.lastupdate) as `lastupdate`, 
-		sum(ph.lastupdate-ph.enterdate) as `time`,team,
-		pi.name as `name`, pi.skindata as `skin`,pi.country as `country` FROM playerhistory AS ph
-		LEFT JOIN playerinfo AS pi ON ph.`id`=pi.`id` WHERE `serverid`=$sid  GROUP BY ph.`id`
-		UNION ALL
-		SELECT ph.id as `id`,sum(ph.numupdates) as `numupdates`, 
-		sum(ph.deathsthismatch) as `deathsthismatch`, sum(ph.scorethismatch) as `scorethismatch`, max(ph.lastupdate) as `lastupdate`, 
-		sum(ph.lastupdate-ph.enterdate) as `time`,team,
-		pi.name as `name`, pi.skindata as `skin`,pi.country as `country` FROM playerhistorythin AS ph
-		LEFT JOIN playerinfo AS pi ON ph.`id`=pi.`id` WHERE `serverid`=$sid GROUP BY ph.`id`) GROUP BY `id`",null,$dbh);*/
-	
-	// '14-07-17 action turtle->flash!!
-	// before: T: 3435 ms
-	// after: BENCH RESULT: 912.11 ms
-	// note: UNION removes duplicated values (slow), use UNION ALL
-	// ^ everything above, for sqlite, it is.
-	// mysql: Checkpoint playerhistory: 37282ms (+37136ms)
-	
-	//$qs1="SELECT * FROM playerhistory WHERE serverid=$sid UNION ALL SELECT * FROM playerhistorythin WHERE serverid=$sid ORDER BY gameid DESC";
-	/*$qs1a="SELECT * FROM playerhistory WHERE serverid=$sid";
-	// DO YOUR INDEXING GOOD F*CKER!
-	//$qs1a="";
-	$qs1b="SELECT * FROM playerhistorythin WHERE serverid=$sid";
-	//$qr1=sqlquerytraversable($qs1,$dbh);*/
-	
+	$title=cp437toentity(htmlspecialchars(unRetardizeServerName($s['name'])))." - ";
+	printf($headerf,$title,$bclass,"View Server Stats, Player Ranks and more for server ".htmlspecialchars($s['name']).".");
+		
 	$qs1="SELECT * FROM player_stats WHERE server_id=$sid";
 
 	
 	$pdxt=array();
-
-	/*$qr1func=function($phgame,&$pdxt){
-		if(!isset($pdxt[$phgame['id']])) {
-			//if(count($pdxt)>=200) continue;
-			$pdxt[$phgame['id']]=array('id'=>$phgame['id'],'time'=>0,'lastupdate'=>0,'enterdate'=>0xFFFFFFFF,'numupdates'=>0,'pingsum'=>0,'deathsthismatch'=>0,'scorethismatch'=>0,'games'=>0,'team'=>$phgame['team']);
-		}
-		//notice ,-reference!
-		$playz = &$pdxt[$phgame['id']];
-		$playz['time']+=$phgame['lastupdate']-$phgame['enterdate'];
-		$playz['enterdate']=min($playz['enterdate'],$phgame['enterdate']);
-		$playz['lastupdate']=max($playz['lastupdate'],$phgame['lastupdate']);
-		$playz['pingsum']+=$phgame['pingsum'];
-		$playz['deathsthismatch']+=(int)$phgame['deathsthismatch'];
-		$playz['scorethismatch']+=(int)$phgame['scorethismatch'];
-		$playz['numupdates']+=(int)$phgame['numupdates'];
-		$playz['games']++;
-	};*/
 	$refreshData=isset($_GET['ttrefresh'])?true:(TableThing::getCachedTableAge('servplayers'.$sid)>86400);
 	
-	//echo "AGE:".TableThing::getCachedTableAge('servplayers'.$sid)." FILE: ".(TableThing::$dataDir."/table_".TableThing::genStaticUniqId('servplayers'.$sid).".json")."";
-	
+
 	if($refreshData && !$banned && $showPlayers){
 		utt_checkpoint("lecimy_kurka_tutaj");
 		$qr1a=sqlquerytraversable($qs1,null,$dbh); 
@@ -307,15 +261,17 @@ if(isset($_GET['ip'])){
 		$smh[$v['id']]['topplayer']=null;
 		$smh[$v['id']]['topplayerscore']=0;
 	}
-	$sq2="SELECT player_logs.*, players.* FROM player_logs LEFT JOIN players ON player_logs.player_id = players.id WHERE match_id IN(".implode(",",$gids).")";
+	$sq2="SELECT player_logs.*, players.* FROM player_logs 
+		LEFT JOIN players ON player_logs.player_id = players.id 
+		WHERE match_id IN(".implode(",",$gids).")";
 	$qr2=sqlquery($sq2,null,$dbh);
 	foreach($qr2 as $pv){
 		$gid=$pv['match_id'];
 		$smh[$gid]['players']++;
 		$smh[$gid]['score']+=$pv['score_this_match'];
 		$smh[$gid]['deaths']+=(int)$pv['deaths_this_match'];
-		$smh[$gid]['lastplayerupdate']=max(strtotime($pv['last_seen_time']),$smh[$gid]['lastplayerupdate']);
-		$smh[$gid]['time']=$smh[$gid]['lastplayerupdate']-strtotime($smh[$gid]['start_time']);
+		$smh[$gid]['lastplayerupdate']=max(sqlDateToUts($pv['last_seen_time']),$smh[$gid]['lastplayerupdate']);
+		$smh[$gid]['time']=$smh[$gid]['lastplayerupdate']-sqlDateToUts($smh[$gid]['start_time']);
 		if($smh[$gid]['topplayerscore']<$pv['score_this_match']){
 			$smh[$gid]['topplayer']=$pv;
 			$smh[$gid]['topplayerscore']=$pv['score_this_match'];
@@ -328,9 +284,9 @@ if(isset($_GET['ip'])){
 	
 	if($s){
 
-		echo "<h2>".cp437toentity(htmlspecialchars($s['n']))."</h2>";
+		echo "<h2>".cp437toentity(htmlspecialchars($s['name']))."</h2>";
 		$lastupdx=0;
-		if($s['last_success']) $lastupdx=strtotime($s['last_success']);
+		if($s['last_success']) $lastupdx=sqlDateToUts($s['last_success']);
 		if(isset($srules['__uttlastupdate'])) $lastupdx=max($lastupdx,$srules['__uttlastupdate']);
 		if($lastupdx==0) $lastupdx=$smh[0]['date'];
 		$rplast=sqlquery("SELECT `data` FROM `config_props` WHERE `key`=\"utt.reaper.scanner.lastupdate\"",1)['data'];
@@ -656,7 +612,6 @@ if(isset($_GET['ip'])){
 		if(!$notUnr) {
 			echo "<a href='http://333networks.com/ut/{$s['ip']}'><img src=\"".maklink(LSTATICFILE,"ext_favicons/333net.png","")."\" class=\"icon\" alt=\"[333networks]\" title=\"333networks\"/></a>\n";
 		}
-		//echo "<a href='http://www.games.pervii.com/search.php?lan=en&amp;q=".urlencode(trim(unRetardizeServerName($s['n'])))."'><img src=\"".maklink(LSTATICFILE,"ext_favicons/pervii.ico","")."\" class=\"icon\" alt=\"[pervii.com]\" title=\"pervii.com\"/></a>\n";
 		echo "<a href='http://www.game-state.com/$ip/'><img src=\"".maklink(LSTATICFILE,"ext_favicons/gamestate.ico","")."\" class=\"icon\" alt=\"[Game-State.com]\" title=\"Game-State.com\"/></a>\n";
 		
 		if(!$banned && isset($srules['__uttrealplayers']) && $srules['__uttrealplayers']<$srules['numplayers']-2){
@@ -696,12 +651,19 @@ if(isset($_GET['ip'])){
 			$scoreInTitle = (isset($srules['mutators']) && strpos($srules['mutators'],"Publish Score in Server Title")!==false) || strpos($s['name'],"minutes remaining")!==false;
 			$hasTeamScores = $xsq || $scoreInTitle || $isTDM;
 			
-			$ponline=sqlquery("SELECT ph.*,pi.*,ps.* FROM players AS pi 
-							   LEFT JOIN player_logs AS ph ON pi.id=ph.player_id
-							   LEFT JOIN player_stats AS ps ON ps.server_id=$sid AND pi.id=ps.player_id WHERE ph.server_id=$sid AND UNIX_TIMESTAMP(ph.last_seen_time) >= ".($lastupdx-10));
-							   /*echo "SELECT ph.*,pi.*,ps.* FROM playerinfo AS pi 
-							   LEFT JOIN playerhistorythin AS ph ON pi.id=ph.id
-							   LEFT JOIN playerstats AS ps ON ps.serverid=$sid AND pi.id=ps.id WHERE ph.serverid=$sid AND ph.lastupdate >= ".($lastupdx-10);*/
+			$ponline=sqlquerysafe("
+								SELECT ph.*,pi.* FROM player_logs AS ph
+									LEFT JOIN players AS pi ON pi.id=ph.player_id
+									WHERE 
+										ph.finished = 0
+										AND ph.server_id=:serverid 
+										AND ph.last_seen_time > :lastseen
+										",
+								[
+									"serverid"=>$sid,
+									"lastseen"=> sqlUtsToDate($lastupdx - 120),
+								]);
+
 			if(count($ponline)){
 				$teams=array();
 				foreach($ponline as &$pxzz){
@@ -714,14 +676,14 @@ if(isset($_GET['ip'])){
 						$pxzz['lastupdatex']=$pxva[$pxzz['id']]['lastupdate'];
 						$pxzz['pingsum']=$pxva[$pxzz['id']]['pingsum'];
 						$pxzz['numupdates']=$pxva[$pxzz['id']]['numupdates'];*/
-						$pxzz['fragz']=$pxzz['scorethismatch'];
-						$pxzz['enterdatex']=$pxzz['enterdate'];
-						$pxzz['lastupdatex']=$pxzz['lastupdate'];
-						$pxzz['skin']=$pxzz['skindata'];
+						$pxzz['fragz']=$pxzz['score_this_match'];
+						$pxzz['enterdatex']=sqlDateToUts($pxzz['first_seen_time']);
+						$pxzz['lastupdatex']=sqlDateToUts($pxzz['last_seen_time']);
+						$pxzz['skin']=$pxzz['skin_data'];
 						//$pxzz['estimatedfragz'] = ($pxzz['score'] / $pxzz['time'])*($pxzz['lastupdate'] - $pxzz['enterdate']);
 						$teams[$pxzz['team']]['p'][]=$pxzz;
 						if($isTDM){
-							$teams[$pxzz['team']]['f']+=$pxzz['scorethismatch'];
+							$teams[$pxzz['team']]['f']+=$pxzz['score_this_match'];
 						}
 					//}
 				}
@@ -802,7 +764,7 @@ if(isset($_GET['ip'])){
 								if(($tn==127 || $tn==255) && $sk[0]=="Spectator") continue;
 								//$pwx=$pxva[$pw['id']];
 								$tim=round(($pw['lastupdatex']-$pw['enterdatex'])/60);
-								$pi=round($pw['pingsum']/$pw['numupdates']);
+								$pi=round($pw['ping_sum']/$pw['seen_count']);
 								
 								$skinCode = (!$notUnr) ? getSkinImage($sk[0],$sk[1],$sk[2],false) : "";
 								
@@ -835,7 +797,7 @@ if(isset($_GET['ip'])){
 					
 					//print_r($teams);
 					
-					usort($ponline,function($a,$b){return $b['scorethismatch']-$a['scorethismatch'];});
+					usort($ponline,function($a,$b){return $b['score_this_match']-$a['score_this_match'];});
 					$ponline=indexaskey($ponline,'id');
 					/*$minEndTime = 86400;
 					$predictedWinner = 0;*/
@@ -853,8 +815,11 @@ if(isset($_GET['ip'])){
 						
 						$sk=explode("|",$pdz['skin']);
 						
-						$tm=round(($pw['lastupdate']-$pw['enterdate'])/60);
-						$pi=round($pw['pingsum']/$pw['numupdates']);
+						$tm=round((
+								sqlDateToUts($pw['last_seen_time'])
+								- sqlDateToUts($pw['first_seen_time'])
+							) / 60);
+						$pi=round($pw['ping_sum']/$pw['seen_count']);
 						$fphstate="";
 						/*if($isCompetitiveGame && $pw['scorethismatch']>1 && $pw['estimatedfragz'] > 1){
 							$satw = round($pw['scorethismatch'] / $pw['estimatedfragz'],2);
@@ -879,7 +844,12 @@ if(isset($_GET['ip'])){
 						$skinCode = (!$notUnr) ? getSkinImage($sk[0],$sk[1],$sk[2],false) : "";
 						$teamClass = "tb".strtolower($tnx);
 						if($notUnr) $teamClass = "";
-						echo "<tr class=\"$teamClass\"><td class='soskin'>$skinCode<br>TM: $tm<br>PI: $pi</td><td class='soname'><a href='".maklinkHtml(LPLAYER,$pw['id'],$pdz['name'],"so")."' class='player'>".htmlspecialchars($pdz['name'])."</a> <!--<a href=\"#{$pw['id']}\" class='fragm'>&#8595;</a>--></td><td class='soscore'>{$pw['scorethismatch']} <!--<span class='sofphState'>$fphstate</span>--></td></tr>\n";
+						echo "
+							<tr class=\"$teamClass\">
+							<td class='soskin'>$skinCode<br>TM: $tm<br>PI: $pi</td>
+							<td class='soname'><a href='".maklinkHtml(LPLAYER,$pw['id'],$pdz['name'],"so")."' class='player'>".htmlspecialchars($pdz['name'])."</a> <!--<a href=\"#{$pw['id']}\" class='fragm'>&#8595;</a>--></td>
+							<td class='soscore'>{$pw['score_this_match']} <!--<span class='sofphState'>$fphstate</span>--></td>
+							</tr>\n";
 					}
 					unset($ponline);
 					echo "</tbody>\n</table>\n";
@@ -1159,10 +1129,6 @@ if(isset($_GET['ip'])){
 				
 			});*/
 			$pt->setRowFormatterCallback(function($r)use(&$fst,$s,$srules,$offline,$unknown,$playerNum,$isCompetitiveGame,$gameTimes){
-				/*if(!isset($s['n'])) {
-					$pt->skipRow();
-					return;
-				}*/
 				$mn="<a href='".maklinkHtml(LMAP,0,$r['map_name'],"sr")."'>".$r['map_name']."</a>";
 				if($fst && $srules['mapname']==$r['map_name']&&!$offline&&!$unknown){
 					$sx=__("Now");
@@ -1172,15 +1138,17 @@ if(isset($_GET['ip'])){
 					$r['score'] = "-";
 					$r['topplayer'] = "???";
 				}else{
-					$sx="<a href=\"".maklinkHtml(LGAME,$r['id'],$s['sid']."-".name2id($s['n']),"sr")."\">".uttdateFmt($r['start_time'])."</a>";
+					$sx="<a href=\"".maklinkHtml(LGAME,$r['id'],$s['server_id']."-".name2id($s['name']),"sr")."\">".uttdateFmt($r['start_time'])."</a>";
 					$r['map_name']=$mn;
 					$r['time']=formattime(($r['time'])/3600);
 					//print_r($r['topplayer'] );
-					$r['sortable_topplayer'] = $r['topplayer']['name'];
-					$topPlayerData = $r['topplayer'];
-					$r['topplayer'] = "<a href=\"".maklinkHtml(LPLAYER,$topPlayerData,null)."\">".htmlspecialchars($topPlayerData['name'])."</a>";
-					if(!isset($srules['fraglimit']) || $srules['fraglimit']==0){
-						$r['topplayer'] .= " (".($topPlayerData['score_this_match']).")";
+					if($r['topplayer']!==null){
+						$r['sortable_topplayer'] = $r['topplayer']['name'];
+						$topPlayerData = $r['topplayer'];
+						$r['topplayer'] = "<a href=\"".maklinkHtml(LPLAYER,$topPlayerData,null)."\">".htmlspecialchars($topPlayerData['name'])."</a>";
+						if(!isset($srules['fraglimit']) || $srules['fraglimit']==0){
+							$r['topplayer'] .= " (".($topPlayerData['score_this_match']).")";
+						}
 					}
 					
 				}
@@ -1311,7 +1279,7 @@ function searchForUTStats($s){
 		}
 	}
 	
-	$qres=GoogleGetURLs("\"{$s['n']}\" intitle:\"Powered by UTStats\"");
+	$qres=GoogleGetURLs("\"{$s['name']}\" intitle:\"Powered by UTStats\"");
 	if(!isset($urlz['items'])) {
 		echo "NOITEMS";
 		if(isset($urlz['error'])){

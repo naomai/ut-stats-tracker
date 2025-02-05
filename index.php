@@ -31,7 +31,7 @@
 		$utt_cfg = null;
 	//}
 	
-	$rplast=sqlquery("SELECT `data` FROM `config_props` WHERE `key`=\"utt.reaper.scanner.lastupdate\"",1)['data'];
+	$rplast=sqlquery("SELECT `data` FROM `config_props` WHERE `key`=\"utt.reaper.lastupdate\"",1)['data'];
 	 
 	$blacklist=explode("\r\n",file_get_contents("blacklist.txt")); // TODO func/class?
 	foreach($blacklist as $k=>$be){
@@ -228,7 +228,7 @@ if(isset($_GET['serv'])){
 			$s['gametype']=(isset($srules['gametype'])?$srules['gametype']:"");
 			$s['mutators']=(isset($srules['mutators'])?$srules['mutators']:"");
 			$s['gamever']=(isset($srules['gamever'])?$srules['gamever']:"");
-			$s['lastupd']=(isset($srules['__uttlastupdate'])?$srules['__uttlastupdate']:strtotime($s['last_success']));
+			$s['lastupd']=(isset($srules['__uttlastupdate'])?$srules['__uttlastupdate']:sqlDateToUts($s['last_success']));
 
 
 			$s['rulesArr']=$srules;

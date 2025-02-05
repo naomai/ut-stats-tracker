@@ -45,6 +45,8 @@ function sqlcreate($host,$user,$pass,$db,$isMain=true){ // 2009-04
 	$sqbuffers[$num]['e']=true;
 	$sqbuffers[$num]['t']=false;
 	$sqcons[$num]=$sqlconn;
+
+	sqlexecnow("SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED");
 	
 	if($isMain){
 		checkTables($sqlconn);
@@ -171,7 +173,7 @@ function sqlexec($query,$handle=null){ // 2009-03 NEW
 	if($handle===null) $handle=key($sqcons);
 	
 	if($sqbuffers[$handle]['e'] && !$sqbuffers[$handle]['t']){
-		$sqcons[$handle]->exec("START TRANSACTION");
+		//$sqcons[$handle]->exec("START TRANSACTION");
 		$sqbuffers[$handle]['t']=true;
 	}
 	
@@ -212,7 +214,7 @@ function sqlcommit($handle=null){
 	if($handle===null) $handle=key($sqcons);
 	
 	if($sqbuffers[$handle]['e'] && $sqbuffers[$handle]['t']){
-		$sqcons[$handle]->exec("COMMIT");
+		//$sqcons[$handle]->exec("COMMIT");
 		$sqbuffers[$handle]['t']=false;
 	}
 	//old code:

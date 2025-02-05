@@ -134,6 +134,38 @@ function sqlquery($query, $limit=null,$handle=null,$fetchType=PDO::FETCH_ASSOC) 
 	return true;
 }
 
+function sqlquerysafe($query, array $params=null, $limit=0) {
+	global $sqcons,$sqlqueries;
+	
+	$handle=key($sqcons);
+	
+	$arr=null;
+
+	if(SQLENG_DEBUG) $sqlqueries.="DB$handle: $query\n";	
+	$tx=microtime(true);
+
+	$stm=$sqcons[$handle]->prepare($query);
+	$stm->execute($params);
+
+	if($sqcons[$handle]->errorInfo()[0]!=0){
+		sqlerr($query, $sqcons[$handle]->errorInfo()[2], 1, 0, "");
+	}
+	$arr = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+	if ( $limit !== 0)
+	{
+
+		if($limit==1){
+			reset($arr);
+			return current($arr);
+		}
+		
+		return $arr;
+	}
+	
+	return true;
+}
+
 function sqlexec($query,$handle=null){ // 2009-03 NEW
 	global $sqcons, $sqbuffers,$sqlqueries;
 	if($handle===null) $handle=key($sqcons);

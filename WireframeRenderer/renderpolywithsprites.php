@@ -1488,8 +1488,15 @@ function utt_checkpoint($name=""){
 	}
 	$GLOBALS['UTTDEBUG_CP']=microtime(true);
 }
-function uttdateFmt($d,$c=true){
+function uttdateFmt(int|string|DateTimeInterface $d, $c=true){
 	global $dateformat;
+
+	if($d instanceof DateTimeInterface){
+		$d = (int)$d->format("U");
+	}else if(!is_int($d)){
+		$d = strtotime($d);
+	}
+
 	if($c){
 		/*if($d > time() - 600) return "Now";
 		else*/ if($d > time() - 3600) return floor((time()-$d)/60) ." min. ago";

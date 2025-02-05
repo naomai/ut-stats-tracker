@@ -187,7 +187,7 @@
 					$serverData = $id;
 					$name = $serverData['name'];
 					/*$id = $serverData['serverid'];*/
-					$ip = getServerIpWithHostPort($serverData['address']);
+					$ip = getServerIpWithHostPort($serverData['address_query']);
 					if(isset($reqParams['page'])){
 						$addy=";{$reqParams['page']}";
 						unset($reqParams['page']);
@@ -339,8 +339,14 @@
          * @global string $c 
          * @return string The formatted date
          */
-	function uttdateFmt($d,$relative=true){
+	function uttdateFmt(int|string|DateTimeInterface $d,bool $relative=true){
 		global $dateformat;
+
+		if($d instanceof DateTimeInterface){
+			$d = (int)$d->format("U");
+		}else if(!is_int($d)){
+			$d = strtotime($d);
+		}
                 
 		if($relative && $d > time() - dssm()-86400*7) 
 			return niceDate($d);

@@ -31,7 +31,7 @@
 		$utt_cfg = null;
 	//}
 	
-	$rplast=sqlquery("SELECT `data` FROM `utt_info` WHERE `key`=\"net.reaper.lastupdate\"",1)['data'];
+	$rplast=sqlquery("SELECT `data` FROM `config_props` WHERE `key`=\"utt.reaper.scanner.lastupdate\"",1)['data'];
 	 
 	$blacklist=explode("\r\n",file_get_contents("blacklist.txt")); // TODO func/class?
 	foreach($blacklist as $k=>$be){
@@ -68,7 +68,7 @@
 	/* servers list */
 	function sortser($a,$b){return -cmp($a['rfcombo'],$b['rfcombo']);}
 	
-	function sortserrf($a,$b){return -cmp($a['rfscore'],$b['rfscore']);}
+	function sortserrf($a,$b){return -cmp($a['rating_month'],$b['rating_month']);}
 	//function sortsersq($a,$b){return -cmp($a['sqscore'],$b['sqscore']);}
 	function sortserpl($a,$b){return -cmp($a['uplayers'],$b['uplayers']);}
 	function sortseropl($a,$b){return -cmp($a['realnum'],$b['realnum']);}
@@ -121,30 +121,10 @@ if(isset($_GET['retarded']) && is_string($_GET['retarded'])){
 }
 
 if(isset($_GET['serv'])){
-	/*$sid=(int)$_GET['serv'];
-	$updrate=$utt_cfg['General']['IntervalMins'];
-	//T: 63 ms
-	$s=sqlquery("SELECT serverinfo.`name` as n,serverinfo.`serverid` as sid, serverinfo.`address` as ip, serverinfo.`rules` as rules, serverhistory.`mapname` as map, serverhistory.`gameid` as gameid FROM serverinfo
-	LEFT JOIN serverhistory ON serverhistory.serverid=serverinfo.serverid WHERE serverinfo.serverid=$sid",1,$dbh);
-	//echo time()-$s['datex'];
-	if(isset($_GET['refresh'])){
-		FetchServerInfo($s['ip']);
-		$s=sqlquery("SELECT serverinfo.`name` as n,serverinfo.`serverid` as sid, serverinfo.`address` as ip, serverinfo.`rules` as rules, serverhistory.`mapname` as map, serverhistory.`gameid` as gameid FROM serverinfo
-		LEFT JOIN serverhistory ON serverhistory.serverid=serverinfo.serverid WHERE serverinfo.serverid=$sid",1,$dbh);
-	}*/
-	
-	if($s['n']=="") error404();
-	/*$expurl=maklink(LSERVER,$s['sid'],$s['n']);
 
-	if(strpos($expurl,strtok($_SERVER['REQUEST_URI'],"?"))===false || strpos($_SERVER['REQUEST_URI'],".htm")===false) permredir($expurl);	*/
-	/*echo "CUR URL: {$_SERVER['REQUEST_URI']}<br>";
-	echo "EXP URL: $expurl<br>";
-	echo "MATCH: " . (strpos($expurl,strtok($_SERVER['REQUEST_URI'],"?"))!==false && strpos($_SERVER['REQUEST_URI'],".htm")!==false ? "TRUE" : "FALSE");*/	
+	if($s['n']=="") error404();
 } else{
-	/*$servstat=sqlquery("SELECT serverinfo.name AS name,serverinfo.address AS address,serverinfo.serverid AS serverid,ph.uplayers AS uplayers,ph.records AS records,pd.pwrecords AS pwrecords FROM serverinfo 
-	INNER JOIN ( SELECT COUNT(DISTINCT id) AS uplayers, SUM(numupdates) AS records, playerhistory.serverid as serverid FROM playerhistory GROUP BY playerhistory.serverid) as ph ON ph.serverid = serverinfo.serverid
-	LEFT JOIN ( SELECT SUM(numupdates) AS pwrecords, playerhistory.serverid as serverid FROM playerhistory WHERE `lastupdate` <= ".(time()-86400)." GROUP BY playerhistory.serverid) as pd ON pd.serverid = serverinfo.serverid
-	ORDER BY uplayers DESC",null,$dbh);*/
+
 	
 	if($utt_cfg!==null){
 		$updrate=$utt_cfg['General.IntervalMins'];
@@ -152,42 +132,19 @@ if(isset($_GET['serv'])){
 	
 	$serversperpage=30;
 	
-	/*if(isset($_GET['ct'])){
-		$orderby="uplayers";
-	}elseif(isset($_GET['rf'])){
-		$orderby="rfscore";
-	}elseif(isset($_GET['po'])){
-		$orderby="numplayers";
-	}else{
-		$orderby="numplayers*(rfscore/400)";
-	}*/
-	
-	//$ord=(isset($_GET['d'])?"ASC":"DESC");
 		
 	$currentpage=(isset($_GET['p'])?(int)$_GET['p']:1);
 	$serversstart=($currentpage-1)*$serversperpage;
 	
-	//$servstat=sqlquery("SELECT * FROM `cache_serverlist` ORDER BY $orderby $ord LIMIT $serversstart,$serversperpage",null,$dbh);
-	
 	$blx=array();
-	/*foreach($blacklist as $bk){
-		//echo "$bk => " . abs(crc32($bk)) . "<br>";
-		$blx[]=abs(crc32($bk));
-	}*/
 	
 	foreach($blacklist as $bk){
 		$blx[$bk]=true;
 	}
 	
-	//$servstat=sqlquery("SELECT * FROM serverinfo WHERE serverid NOT IN(".implode(",",$blx).")",null,$dbh);
-	$servstat=sqlquery("SELECT * FROM serverinfo WHERE `gamename` = 'ut'",null,$dbh);
-	//$servstatallsize=sqlquery("SELECT count(*) as c FROM `cache_serverlist`",1,$dbh)['c'];
-	
-	
+	$servstat=sqlquery("SELECT * FROM servers WHERE `game_name` = 'ut'",null,$dbh);
 	
 	printf($headerf,"","gm-default","Player and Server Stats for Unreal Tournament 99");
-	//$rfavg=rf_avg($servstat);
-	
 	
 	if(isset($_GET['filter'])){
 		$filterTypes=explode(",",$_GET['filter']);
@@ -227,16 +184,7 @@ if(isset($_GET['serv'])){
 	echo " with name: <input type='text' name='name' value='".(isset($_GET['name'])?htmlspecialchars($_GET['name']):"")."' />\n";
 	echo "<input type='submit' value='Search'/>";
 	echo "</form>-->\n";
-	//echo "DEBUG: RF AVG=$rfavg<br>";
-	/*foreach($servstat as &$se){
-		if(striposa($se['address'],$blacklist)!==false){
-			$se['bl']=true;
-		}else if(isset($se['bl'])){
-			unset($se['bl']);
-		}
-		
-	}*/
-	
+
 	
 	$onlineplayers=0;
 	$playerslots=0;
@@ -245,11 +193,11 @@ if(isset($_GET['serv'])){
 	$currentViewPlayerSlots = 0;
 	foreach ($servstat as $k=>&$s){
 		
-		$blacklisted=isset($blx[$s['address']]);
+		$blacklisted=isset($blx[$s['address_query']]);
 		
-		$srules=json_decode((string)$s['rules'],true);
+		$srules=json_decode((string)$s['variables'],true);
 		
-		if(isset($s['gamename']) && $s['gamename']!='ut') {
+		if(isset($s['game_name']) && $s['game_name']!='ut') {
 			unset($servstat[$k]);
 			continue;
 		}
@@ -266,12 +214,12 @@ if(isset($_GET['serv'])){
 			$s['gamever']="";
 			
 		}else{
+
 			$s['numplayers']=$srules['numplayers'];
 			$s['maxplayers']=$srules['maxplayers'];
 			$s['humanplayers']=(isset($srules['__uttrealplayers'])?$srules['__uttrealplayers']:-1);
 			
 			if($s['humanplayers'] != -1 && $s['humanplayers'] < $s['numplayers']){
-				//$s['rfscore']=1684;
 				$s['realnum']=$s['humanplayers'];
 			}else{
 				$s['realnum']=$s['numplayers'];
@@ -280,18 +228,21 @@ if(isset($_GET['serv'])){
 			$s['gametype']=(isset($srules['gametype'])?$srules['gametype']:"");
 			$s['mutators']=(isset($srules['mutators'])?$srules['mutators']:"");
 			$s['gamever']=(isset($srules['gamever'])?$srules['gamever']:"");
-			$s['lastupd']=(isset($srules['__uttlastupdate'])?$srules['__uttlastupdate']:$s['lastscan']);
+			$s['lastupd']=(isset($srules['__uttlastupdate'])?$srules['__uttlastupdate']:strtotime($s['last_success']));
+
+
 			$s['rulesArr']=$srules;
 		}
 		
 		if($blacklisted) {
-			$s['rfscore']=round($s['rfscore']*0.65);
+			$s['rating_month']=round($s['rating_month']*0.65);
 			$s['black']=true;
 		}
 		
-		$s['rfcombo']=round(pow($s['rfscore'],1.6)*($s['realnum']+1));
+		$s['rfcombo']=round(pow($s['rating_month'],1.6)*($s['realnum']+1));
 		
 		$s['gtypes']=getServerTags($s);
+
 		if($rplast < $s['lastupd']-600) $scannerReboot=true;
 		else if($rplast < time() - 600) $scannerOffline=true;
 		if(time()-$s['lastupd']>900){
@@ -407,9 +358,9 @@ if(isset($_GET['serv'])){
 		//if($cld++ == 200) break;
 		
 		$lastupd=$s['lastupd'];
-		$rf=$s['rfscore']; //round(rf($s)/($rfavg+0.0001)*650);
+		$rf=$s['rating_month']; //round(rf($s)/($rfavg+0.0001)*650);
 		//$sq=$s['sqscore'];
-		$upl=$s['uplayers'];
+		//$upl=$s['uplayers'];
 		$srules=$s['rulesArr'];
 		/*if(time()-$s['lastrfupdate']>86400*2 ) {
 			$rf="n/a";
@@ -417,9 +368,9 @@ if(isset($_GET['serv'])){
 		}*/
 		//$rf="n/a";
 		//$upl="n/a";
-		list($ipa,$port)=explode(":",$s['address'],2);
-		$portx=((int)$port-1);
-		if(isset($s['hostport'])) $portx=$s['hostport'];
+		list($ipa,$port)=explode(":",$s['address_game'],2);
+		$portx=((int)$port);
+		//if(isset($s['hostport'])) $portx=$s['hostport'];
 		$ip=$ipa.":" . $portx;
 		
 		$dispIpChunks=explode(".",$ipa);
@@ -430,9 +381,9 @@ if(isset($_GET['serv'])){
 		
 		if($s['country']==""){
 			require_once "geoiploc.php"; // we don't need to include this at every request!
-			$s['country']=getCountryFromIP(explode(":",$s['address'])[0], "code");
+			$s['country']=getCountryFromIP(explode(":",$s['address_game'])[0], "code");
 			if($s['country']!=""){
-				sqlexec("UPDATE serverinfo SET `country`=\"{$s['country']}\" WHERE serverid={$s['serverid']}");
+				sqlexec("UPDATE servers SET `country`=\"{$s['country']}\" WHERE `id`={$s['id']}");
 			}
 			
 		}
@@ -472,7 +423,7 @@ if(isset($_GET['serv'])){
 		
 		$addiRowStyle="";
 		//if($s['black']) $addiRowStyle.=" gayBlacklist";
-		echo "\t<tr class=\"mlrow$addiRowStyle\" id='serv_{$s['serverid']}'>
+		echo "\t<tr class=\"mlrow$addiRowStyle\" id='serv_{$s['id']}'>
 		<td class='mltype'>$gt</td>
 		<td class=\"mlname verylongtext\"><a href='".maklinkHtml(LSERVER,$s,null)."'>$cif$pwlock ".cp437toentity(htmlentities($sname))."</a>";
 		
@@ -559,11 +510,7 @@ if(isset($_GET['serv'])){
 				$calculatedMaxNumPlayers = $s['realnum'];
 			}
 			$maxpl=$s['maxplayers'];
-			if($numpl>=$maxpl || 
-				(($s['serverid']==522350518 || $s['serverid']==992738732) && $numpl>=12) || // |uk| instagib (max 12 players)
-				(($s['serverid']==1891472973) && $numpl>=16) || // |uk| bunnytrack the sam house (max 16)
-				(($s['serverid']==2115296102) && $numpl>=25) // |uk| siege (max 25)
-			){
+			if($numpl>=$maxpl){
 				if($numpl==0){
 					$mlcplclass='mlcpl_openslots';
 					$numpl='?';
@@ -600,9 +547,6 @@ if(isset($_GET['serv'])){
 		}
 		echo "</td>
 		<td class='mlcm verylongtext'>$mapCell</td>
-		<!--<td class='mlrf'>".$rf."</td>-->
-		<!--<td class='mlup'>".$upl."</td>-->
-		<!--<td class='mllu'>".uttdateFmt($s['lastscan'])."</td>-->
 		<td class='mlip'>$dispIp</td>\n\t</tr>\n";
 		$rowsDisplayed++;
 		$lastRowId=$i+$serversstart;

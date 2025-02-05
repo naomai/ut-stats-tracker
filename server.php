@@ -61,17 +61,11 @@ $showRules = $pageParam && $_GET['page']=='rules';
 $showPlayers = !$showRules;
 $requestingRescan = $pageParam && $_GET['page']=='refresh';
 
-if(isset($_GET['ip'])){
-	$ipAddr=strtok($_GET['ip'],":");
-	$port=strtok("\r");
-	$sid=abs(crc32($ipAddr . ":" . ($port+1)));
-	$_GET['serv'] = $sid;
-}
 
-if(isset($_GET['serv'])){
-	$sid=(int)$_GET['serv'];
-	unset($_GET['serv']);
+
+if(isset($_GET['ip'])){
 	$updrate=2;//$utt_cfg['General']['IntervalMins'];
+	$addr_req = $_GET['ip'];
 	//T: 63 ms
 	/*$s=sqlquery("SELECT serverinfo.`name` as n,serverinfo.`serverid` as sid, serverinfo.`address` as ip, serverinfo.`rules` as rules, serverhistory.`mapname` as map, 
 	serverhistory.`gameid` as gameid,`uplayers`,
@@ -81,8 +75,16 @@ if(isset($_GET['serv'])){
 	*/
 	
 	//$si=sqlquery("SELECT `name` as n,`address` as ip,`serverid` as sid,`uplayers`,`rules`,`lastscan`, FIND_IN_SET( rfscore, ( SELECT GROUP_CONCAT( rfscore ORDER BY rfscore DESC ) FROM serverinfo WHERE lastscan > ".(time()-86400*7)." ) ) AS rank FROM serverinfo WHERE serverid=$sid",1,$dbh);
-	$si=sqlquery("SELECT `name`,`address`,`name` as n,`address` as ip,`serverid` as sid,`uplayers`,`rules`,`lastscan`,`gamename` FROM serverinfo WHERE serverid=$sid",1,$dbh);
-	$sh=sqlquery("SELECT `mapname` as map, `gameid` FROM serverhistory WHERE serverid=$sid ORDER BY gameid DESC limit 1",1,$dbh);
+	//$si=sqlquery("SELECT `name`,`address_game`, `address_query`,`name` as n,`address_query` as ip,`id` as sid,`variables`,`last_success`,`game_name` FROM servers WHERE `address_game`=$addr_req",1,$dbh);
+	
+	$si = sqlquerysafe(
+		"SELECT `name`,`address_game`, `address_query`,`name` as n,`address_query` as ip,`id` as sid,`variables`,`last_success`,`game_name` 
+		FROM servers WHERE `address_game`=:addr",
+		['addr'=>$addr_req],
+		1);
+	$sid = $si['sid'];
+	
+	$sh=sqlquery("SELECT `map_name` as map, `id` FROM server_matches WHERE server_id=$sid ORDER BY id DESC limit 1",1,$dbh);
 
 	
 	if($sh!=null){
@@ -90,8 +92,8 @@ if(isset($_GET['serv'])){
 	}else{
 		$s=$si;
 	}
-	if($s['rules']!=""){
-		$srules=json_decode($s['rules'],true);
+	if($s['variables']!=""){
+		$srules=json_decode($s['variables'],true);
 		$noData = $srules == null || !isset($srules['hostname']);
 		ksort($srules);
 		if(!isset($s['gamename']) && $srules['gamename']!=null) $s['gamename'] = $srules['gamename'];
@@ -209,7 +211,7 @@ if(isset($_GET['serv'])){
 	$qs1b="SELECT * FROM playerhistorythin WHERE serverid=$sid";
 	//$qr1=sqlquerytraversable($qs1,$dbh);*/
 	
-	$qs1="SELECT * FROM playerstats WHERE serverid=$sid";
+	$qs1="SELECT * FROM player_stats WHERE server_id=$sid";
 
 	
 	$pdxt=array();
@@ -240,14 +242,14 @@ if(isset($_GET['serv'])){
 		utt_checkpoint("playerhistoryQwery");
 		while(($phgame=sqlfetch($qr1a))!==false){
 
-			if(!isset($pdxt[$phgame['playerid']])) {
+			if(!isset($pdxt[$phgame['player_id']])) {
 				//if(count($pdxt)>=200) continue;
-				$pdxt[$phgame['playerid']]=array(
-					'id'=>$phgame['playerid'],
+				$pdxt[$phgame['player_id']]=array(
+					'id'=>$phgame['player_id'],
 					'time'=>0,
 					'lastupdate'=>0,
 					'enterdate'=>0xFFFFFFFF,
-					'numupdates'=>0,
+					//'numupdates'=>0,
 					'pingsum'=>0,
 					'deathsthismatch'=>null,
 					'scorethismatch'=>0,
@@ -255,13 +257,13 @@ if(isset($_GET['serv'])){
 					'team'=>isset($phgame['team']) ? $phgame['team'] : 0
 				);
 			}
-			$playz = &$pdxt[$phgame['playerid']];
-			$playz['time']=$phgame['time'];
+			$playz = &$pdxt[$phgame['player_id']];
+			$playz['time']=$phgame['game_time'];
 			//$playz['pingsum']=$phgame['pingsum'];
 			$playz['deathsthismatch']=$phgame['deaths'];
 			$playz['scorethismatch']=$phgame['score'];
-			$playz['numupdates']=$phgame['numupdates'];
-			if($playz['time']<0) $playz['time']=$playz['numupdates']*120;
+			//$playz['numupdates']=$phgame['seen_count'];
+			//if($playz['time']<0) $playz['time']=$playz['numupdates']*120;
 			
 			//$playz['games']++;
 		}
@@ -272,14 +274,14 @@ if(isset($_GET['serv'])){
 		
 		$playerids=array_keys($pdxt);
 		if(count($playerids)){
-			$qs2="SELECT * FROM playerinfo WHERE id IN(".implode(",",$playerids).")";
+			$qs2="SELECT * FROM players WHERE id IN(".implode(",",$playerids).")";
 			$qr2=sqlquerytraversable($qs2,$dbh); // T: 21 ms
 			
 			while(($pinfo=sqlfetch($qr2))!==false){
-				if($pdxt[$pinfo['id']]['id']!=$pinfo['id']) continue;
+				//if($pdxt[$pinfo['id']]['id']!=$pinfo['id']) continue;
 				$ply = &$pdxt[$pinfo['id']];
 				$ply['name']=$pinfo['name'];
-				$ply['skin']=$pinfo['skindata'];
+				$ply['skin']=$pinfo['skin_data'];
 				$ply['country']=$pinfo['country'];
 
 			}
@@ -290,33 +292,33 @@ if(isset($_GET['serv'])){
 		}
 	}
 
-	$sq1="SELECT * FROM serverhistory WHERE serverid=$sid ORDER BY date DESC LIMIT 10";
+	$sq1="SELECT * FROM server_matches WHERE server_id=$sid ORDER BY start_time DESC LIMIT 10";
 	$qr1=sqlquery($sq1,null,$dbh);
 	$gids=array();
 	$smh=array();
 	foreach($qr1 as $v){
-		$gids[]=$v['gameid'];
-		$smh[$v['gameid']]=$v;
-		$smh[$v['gameid']]['players']=0;
-		$smh[$v['gameid']]['score']=0;
-		$smh[$v['gameid']]['deaths']=0;
-		$smh[$v['gameid']]['time']=0;
-		$smh[$v['gameid']]['lastplayerupdate']=0;
-		$smh[$v['gameid']]['topplayer']=null;
-		$smh[$v['gameid']]['topplayerscore']=0;
+		$gids[]=$v['id'];
+		$smh[$v['id']]=$v;
+		$smh[$v['id']]['players']=0;
+		$smh[$v['id']]['score']=0;
+		$smh[$v['id']]['deaths']=0;
+		$smh[$v['id']]['time']=0;
+		$smh[$v['id']]['lastplayerupdate']=0;
+		$smh[$v['id']]['topplayer']=null;
+		$smh[$v['id']]['topplayerscore']=0;
 	}
-	$sq2="SELECT playerhistory.*, playerinfo.* FROM playerhistory LEFT JOIN playerinfo ON playerhistory.id = playerinfo.id WHERE gameid IN(".implode(",",$gids).")";
+	$sq2="SELECT player_logs.*, players.* FROM player_logs LEFT JOIN players ON player_logs.player_id = players.id WHERE match_id IN(".implode(",",$gids).")";
 	$qr2=sqlquery($sq2,null,$dbh);
 	foreach($qr2 as $pv){
-		$gid=$pv['gameid'];
+		$gid=$pv['match_id'];
 		$smh[$gid]['players']++;
-		$smh[$gid]['score']+=$pv['scorethismatch'];
-		$smh[$gid]['deaths']+=(int)$pv['deathsthismatch'];
-		$smh[$gid]['lastplayerupdate']=max($pv['lastupdate'],$smh[$gid]['lastplayerupdate']);
-		$smh[$gid]['time']=$smh[$gid]['lastplayerupdate']-$smh[$gid]['date'];
-		if($smh[$gid]['topplayerscore']<$pv['scorethismatch']){
+		$smh[$gid]['score']+=$pv['score_this_match'];
+		$smh[$gid]['deaths']+=(int)$pv['deaths_this_match'];
+		$smh[$gid]['lastplayerupdate']=max(strtotime($pv['last_seen_time']),$smh[$gid]['lastplayerupdate']);
+		$smh[$gid]['time']=$smh[$gid]['lastplayerupdate']-strtotime($smh[$gid]['start_time']);
+		if($smh[$gid]['topplayerscore']<$pv['score_this_match']){
 			$smh[$gid]['topplayer']=$pv;
-			$smh[$gid]['topplayerscore']=$pv['scorethismatch'];
+			$smh[$gid]['topplayerscore']=$pv['score_this_match'];
 		}
 	}
 	$smh=array_values($smh);
@@ -328,10 +330,10 @@ if(isset($_GET['serv'])){
 
 		echo "<h2>".cp437toentity(htmlspecialchars($s['n']))."</h2>";
 		$lastupdx=0;
-		if($s['lastscan']) $lastupdx=$s['lastscan'];
+		if($s['last_success']) $lastupdx=strtotime($s['last_success']);
 		if(isset($srules['__uttlastupdate'])) $lastupdx=max($lastupdx,$srules['__uttlastupdate']);
 		if($lastupdx==0) $lastupdx=$smh[0]['date'];
-		$rplast=sqlquery("SELECT `data` FROM `utt_info` WHERE `key`=\"net.reaper.lastupdate\"",1)['data'];
+		$rplast=sqlquery("SELECT `data` FROM `config_props` WHERE `key`=\"utt.reaper.scanner.lastupdate\"",1)['data'];
 		$offline= (abs($rplast - $lastupdx) > 600) && $lastupdx < time() - 600;
 		$unknown = time()-$rplast > 600 && time()-$lastupdx > 600;
 		$oldUTT = $lastupdx == 0 && count($srules)==0;
@@ -348,7 +350,7 @@ if(isset($_GET['serv'])){
 			//echo "; <a href='".maklinkHtml(LSERVER,$s,null,array('page'=>'refresh'))."'>".__("click here to check it again")."</a>";
 			echo ") </small>";
 			//echo $s['address'];
-			if($requestingRescan){
+			/*if($requestingRescan){
 				list($ipa,$portq)=explode(":",$s['ip'],2);
 				
 				if(isset($srules['queryport'])) $portq=$srules['queryport'];
@@ -361,7 +363,7 @@ if(isset($_GET['serv'])){
 				
 				
 				echo "\r\n<br><span class=\"inYourFace\">".__("The server will be checked during the next scan.")."</span>\r\n";
-			}
+			}*/
 		}else{
 			echo "<b>".__("Online")."</b> <small>(";
 			printf(__('updated %1$s ago'),($lastUpdateSeconds>86400?formattime($lastUpdateSeconds/3600):formattimesmall($lastUpdateSeconds)));
@@ -408,10 +410,10 @@ if(isset($_GET['serv'])){
 							// The following commented code is left here as my punishment for using deprectated functions for long time. Learn from my mistakes.
 							//sqlexec("INSERT INTO mapdownloadqueue (`mapname`) VALUES (\"".@mysql_real_escape_string($srules['mapname'])."\")");
 							
-							
+							/*
 							$mapDQStat=$pdoHnd->prepare("INSERT INTO mapdownloadqueue (`mapname`) VALUES (:map)");
 							$mapDQStat->bindParam(":map",$srules['mapname']);
-							$mapDQStat->execute();
+							$mapDQStat->execute();*/
 							unset($mapDQStat);
 							
 							
@@ -434,10 +436,10 @@ if(isset($_GET['serv'])){
 		
 		echo "<div class='mapinfo'><p>";
 		
-		if($s['gamename'] == 'ut' || $s['gamename']==null) 
+		if($s['game_name'] == 'ut' || $s['game_name']==null) 
 			$proto="unreal";
 		else
-			$proto=$s['gamename'];
+			$proto=$s['game_name'];
 		
 	
 		echo __('Server address').": <a href=\"$proto://$ip\">$proto://$ip</a>";
@@ -449,10 +451,10 @@ if(isset($_GET['serv'])){
 			if( !$offline)
 				echo "<p>".__("Players online").": ".$playerNum." / {$srules['maxplayers']}</p>";
 				
-			$uniqplayers=$s['uplayers'];
+			//$uniqplayers=$s['uplayers'];
 			if(!$banned){
 				
-				$scount=sqlquery("SELECT count(*) as `ct` FROM serverinfo WHERE lastscan>".(time()-3600),1)['ct'];
+				$scount=sqlquery("SELECT count(*) as `ct` FROM servers WHERE UNIX_TIMESTAMP(last_success)>".(time()-3600),1)['ct'];
 				//if($s['rank']) $rank=$s['rank']; else $rank="-";
 				//echo "<p>".__("Rank").": $rank of $scount</p>\n";
 				//echo "<p>".__("Unique players").": {$s['uplayers']}</p>\n";
@@ -694,9 +696,9 @@ if(isset($_GET['serv'])){
 			$scoreInTitle = (isset($srules['mutators']) && strpos($srules['mutators'],"Publish Score in Server Title")!==false) || strpos($s['name'],"minutes remaining")!==false;
 			$hasTeamScores = $xsq || $scoreInTitle || $isTDM;
 			
-			$ponline=sqlquery("SELECT ph.*,pi.*,ps.* FROM playerinfo AS pi 
-							   LEFT JOIN playerhistorythin AS ph ON pi.id=ph.id
-							   LEFT JOIN playerstats AS ps ON ps.serverid=$sid AND pi.id=ps.playerid WHERE ph.serverid=$sid AND ph.lastupdate >= ".($lastupdx-10));
+			$ponline=sqlquery("SELECT ph.*,pi.*,ps.* FROM players AS pi 
+							   LEFT JOIN player_logs AS ph ON pi.id=ph.player_id
+							   LEFT JOIN player_stats AS ps ON ps.server_id=$sid AND pi.id=ps.player_id WHERE ph.server_id=$sid AND UNIX_TIMESTAMP(ph.last_seen_time) >= ".($lastupdx-10));
 							   /*echo "SELECT ph.*,pi.*,ps.* FROM playerinfo AS pi 
 							   LEFT JOIN playerhistorythin AS ph ON pi.id=ph.id
 							   LEFT JOIN playerstats AS ps ON ps.serverid=$sid AND pi.id=ps.id WHERE ph.serverid=$sid AND ph.lastupdate >= ".($lastupdx-10);*/
@@ -1087,34 +1089,37 @@ if(isset($_GET['serv'])){
 			echo "<h3>".__('Last matches:')."</h3>";
 			//utt_benchmark_start();
 			$fst=true;
-			foreach($smh as $k=>$map){
-				$gid=$map['gameid'];
+			/*foreach($smh as $k=>$map){
+				$gid=$map['id'];
 				//if(!$fst && time()-($map['date']+$map['time']) < 300) {
 					
 				//if($map['date']<time()-14400){ //match has ended
-				if(!$fst && $srules['mapname']!==$map['mapname']){
+				if(!$fst && $srules['mapname']!==$map['map_name']){
 					if($map['players']==0){
-						sqlexecnow("DELETE FROM serverhistory WHERE gameid=$gid",$dbh);
+						sqlexecnow("DELETE FROM player_logs WHERE match_id=$gid");
+						sqlexecnow("DELETE FROM server_matches WHERE id=$gid",$dbh);
 						//echo "DEL: $gid ";
 						unset($smh[$k]);
 						continue;
 					}
 					if($map['time'] < 60){
-						sqlexecnow("DELETE FROM serverhistory WHERE gameid=$gid;DELETE FROM playerhistory WHERE gameid=$gid");
+						sqlexecnow("DELETE FROM player_logs WHERE match_id=$gid");
+						sqlexecnow("DELETE FROM server_matches WHERE id=$gid");
 						//echo "DEL: $gid ";
 						unset($smh[$k]);
 						continue;
 					}
 				}
 				if($map['time'] < 0){
-					sqlexecnow("DELETE FROM serverhistory WHERE gameid=$gid;DELETE FROM playerhistory WHERE gameid=$gid");
+					sqlexecnow("DELETE FROM player_logs WHERE match_id=$gid");
+					sqlexecnow("DELETE FROM server_matches WHERE id=$gid");
 					//echo "DEL: $gid ";
 					unset($smh[$k]);
 					continue;
 				}
 				
 				$fst=false;
-			}
+			}*/
 			$fst=true;
 			$pt=new TableThing($smh,'servmaps'.$sid);
 			$pt->htmlClass="huge";
@@ -1122,11 +1127,11 @@ if(isset($_GET['serv'])){
 			$pt->dataLastUpdated=$lastupdx;
 			$pt->allowSorting=false;
 			
-			$cx=$pt->addColumn('date',__('Date'));
+			$cx=$pt->addColumn('start_time',__('Date'));
 			$cx->contentType=TTCI::CONTENT_HTML;
 			$cx->sortOrder=TableThing::SORT_DESC;
 			
-			$cx=$pt->addColumn('mapname',__('Map'));
+			$cx=$pt->addColumn('map_name',__('Map'));
 			$cx->contentType=TTCI::CONTENT_HTML;
 			$cx->sortOrder=TableThing::SORT_ASC;
 			
@@ -1158,29 +1163,29 @@ if(isset($_GET['serv'])){
 					$pt->skipRow();
 					return;
 				}*/
-				$mn="<a href='".maklinkHtml(LMAP,0,$r['mapname'],"sr")."'>".$r['mapname']."</a>";
-				if($fst && $srules['mapname']==$r['mapname']&&!$offline&&!$unknown){
+				$mn="<a href='".maklinkHtml(LMAP,0,$r['map_name'],"sr")."'>".$r['map_name']."</a>";
+				if($fst && $srules['mapname']==$r['map_name']&&!$offline&&!$unknown){
 					$sx=__("Now");
-					$r['mapname']="$mn <small>(".__('in progress').")</small>";
+					$r['map_name']="$mn <small>(".__('in progress').")</small>";
 					$r['time'] = formattime($gameTimes['gameTime']/3600); //formattime((time()-$r['date'])/3600);
 					$r['players'] = $playerNum;
 					$r['score'] = "-";
 					$r['topplayer'] = "???";
 				}else{
-					$sx="<a href=\"".maklinkHtml(LGAME,$r['gameid'],$s['sid']."-".name2id($s['n']),"sr")."\">".uttdateFmt($r['date'])."</a>";
-					$r['mapname']=$mn;
+					$sx="<a href=\"".maklinkHtml(LGAME,$r['id'],$s['sid']."-".name2id($s['n']),"sr")."\">".uttdateFmt($r['start_time'])."</a>";
+					$r['map_name']=$mn;
 					$r['time']=formattime(($r['time'])/3600);
 					//print_r($r['topplayer'] );
 					$r['sortable_topplayer'] = $r['topplayer']['name'];
 					$topPlayerData = $r['topplayer'];
 					$r['topplayer'] = "<a href=\"".maklinkHtml(LPLAYER,$topPlayerData,null)."\">".htmlspecialchars($topPlayerData['name'])."</a>";
 					if(!isset($srules['fraglimit']) || $srules['fraglimit']==0){
-						$r['topplayer'] .= " (".($topPlayerData['scorethismatch']).")";
+						$r['topplayer'] .= " (".($topPlayerData['score_this_match']).")";
 					}
 					
 				}
 				$fst=false;
-				$r['date']=$sx;
+				$r['start_time']=$sx;
 						
 						
 				return $r;

@@ -7,14 +7,15 @@ during last 20+ years.
 
 ![A site with huge logo, and a list of game servers](Screenshot-exemple/fssRERg.jpg)
 
-## Current development
+## Current development - UTT2
 The project is being rewritten to utilize modern technologies. Aims to be more
 stable, and deployable in various environments. New version are developed at:
 
 - [uttracker-web](https://github.com/naomai/uttracker-web) - website (PHP, Laravel, Vue)
 - [uttracker-indexer](https://github.com/naomai/uttracker-indexer) - server data collector, formerly `ServerScanner` (VB.NET, C#)
 - [uttracker-poi](https://github.com/naomai/uttracker-downloader) - POI maps generator and level downloader (Python, PHP) 
-
+- [demo_newdb](https://github.com/naomai/ut-stats-tracker/tree/demo_newdb) - 
+transitional branch of this UTTracker version, used for testing of new Indexer.
 
 ## Disclaimer
 This is an archival repo, containing old incarnation of the project. 

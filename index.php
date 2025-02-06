@@ -379,14 +379,6 @@ if(isset($_GET['serv'])){
 		$dispIp.=":".$portx;
 
 		
-		if($s['country']==""){
-			require_once "geoiploc.php"; // we don't need to include this at every request!
-			$s['country']=getCountryFromIP(explode(":",$s['address_game'])[0], "code");
-			if($s['country']!=""){
-				sqlexec("UPDATE servers SET `country`=\"{$s['country']}\" WHERE `id`={$s['id']}");
-			}
-			
-		}
 		
 		
 		if(($country=$s['country']) != ""){

@@ -517,7 +517,7 @@ if(isset($_GET['ip'])){
 		}
 		
 		$goals = array();
-		
+
 
 		if($isCTF) $teamPointsName = "captures";
 		else if($isTDM) $teamPointsName = "team frags";
@@ -657,12 +657,14 @@ if(isset($_GET['ip'])){
 									WHERE 
 										ph.finished = 0
 										AND ph.server_id=:serverid 
-										AND ph.last_seen_time > :lastseen
+										AND ph.last_seen_time > STR_TO_DATE(:lastseen, '%Y-%m-%d %H:%i:%s')
 										",
 								[
 									"serverid"=>$sid,
-									"lastseen"=> sqlUtsToDate($lastupdx - 120),
+									"lastseen"=>sqlUtsToDate($lastupdx - 120),
 								]);
+
+			//var_dump($ponline);
 
 			if(count($ponline)){
 				$teams=array();
@@ -688,20 +690,27 @@ if(isset($_GET['ip'])){
 					//}
 				}
 				
-			
+				$isTeamGame = $srules['gametype']=="CTFGame" 
+					|| $srules['gametype']=="TeamGamePlus" 
+					|| $srules['gametype']=="SiegeGI" 
+					|| (isset($srules['maxteams']) && $srules['maxteams']>=2);
+				
 				$teams['maxct']=0;
 				for($i=0; $i<255; $i++){
-					
-					if(isset($srules['teamname_'.$i])){
+		
+					if(isset($teams[$i]) && isset($srules['teamname_'.$i])){
 						$teams[$i]['n']=$srules['teamname_'.$i];
-						$teams[$i]['s']=$srules['teamsize_'.$i];
+						//$teams[$i]['s']=$srules['teamsize_'.$i];
+						$teams[$i]['s']=count($teams[$i]['p']);
 						$teams[$i]['f']=$srules['teamscore_'.$i];
 						$teams['maxct']=max($teams['maxct'],$teams[$i]['s']);
 						
 					}
 
 				}
-				if($srules['gametype']=="CTFGame" || $srules['gametype']=="TeamGamePlus" || $srules['gametype']=="SiegeGI" || (isset($srules['maxteams']) && $srules['maxteams']>=2)){
+
+				
+				if($isTeamGame){
 
 					echo "<table class='flexisemihuge' id='servonline'>\n<thead>\n<tr>";
 					

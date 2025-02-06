@@ -1520,7 +1520,11 @@
 			$timeLimit = isset($serverRules['timelimit']) ? $serverRules['timelimit']*60 : 0;
 			$gameEnd = $serverRules['__uttlastupdate'] + $serverRules['remainingtime'];
 			//$gameStart = $gameEnd - $timeLimit;
-			$gameStart = $serverRules['__uttlastupdate'] - $serverRules['elapsedtime'];
+			if(isset($serverRules['elapsedtime'])) {
+				$gameStart = $serverRules['__uttlastupdate'] - $serverRules['elapsedtime'];
+			} else {
+				$gameStart = $gameEnd - $timeLimit;
+			}
 			$gameTime = time() - $gameStart;
 			$remaining = $gameEnd - time();
 			

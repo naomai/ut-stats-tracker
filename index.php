@@ -379,7 +379,7 @@ if(isset($_GET['serv'])){
 		$dispIp.=":".$portx;
 
 		
-		
+
 		
 		if(($country=$s['country']) != ""){
 			//$cif="<img src='$assetsPath/flags/".strtolower($country).".gif' alt='$country' title='$country'/> ";
@@ -528,7 +528,7 @@ if(isset($_GET['serv'])){
 		
 		//$bts=($numpl!="?" && $s['realnum']!=$s['numplayers'])?"<br>(+".($s['numplayers']-$s['realnum'])." bots)":"";
 		echo "<span class='$mlcplclass'>$numplayersText</span>";
-		if($numpl!="?" && $s['numplayers']>$calculatedMaxNumPlayers){
+		if($numpl!="?" && $srules['__uttfakeplayers']){
 			echo " <span class='mlcpl_excl' title=\"Server scanner has detected fake players (server says ".((int)$s['numplayers']).")\">[!]</span>";
 		}
 		

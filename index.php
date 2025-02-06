@@ -66,7 +66,7 @@
 	/* callback functions for sorting */
 	
 	/* servers list */
-	function sortser($a,$b){return -cmp($a['rfcombo'],$b['rfcombo']);}
+	function sortser($a,$b){return -cmp($a['rating_minute'],$b['rating_minute']);}
 	
 	function sortserrf($a,$b){return -cmp($a['rating_month'],$b['rating_month']);}
 	//function sortsersq($a,$b){return -cmp($a['sqscore'],$b['sqscore']);}
@@ -295,7 +295,7 @@ if(isset($_GET['serv'])){
 	}else if(isset($_GET['rf'])){
 		usort($servstat,'sortserrf');
 	}else{
-		usort($servstat,'sortseropl');
+		usort($servstat,'sortser');
 	}
 	
 	if(!isset($_GET['d'])) {

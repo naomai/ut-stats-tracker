@@ -31,7 +31,8 @@
 		$utt_cfg = null;
 	//}
 	
-	$rplast=sqlquery("SELECT `data` FROM `config_props` WHERE `key`=\"utt.reaper.lastupdate\"",1)['data'];
+	//$rplast=sqlquery("SELECT `data` FROM `config_props` WHERE `key`=\"utt.reaper.lastupdate\"",1)['data'];
+	$rplast = time();
 	 
 	$blacklist=explode("\r\n",file_get_contents("blacklist.txt")); // TODO func/class?
 	foreach($blacklist as $k=>$be){
@@ -49,6 +50,8 @@
 	if(isset($_GET['error'])) throw new Exception("Moo");
 	 
 	/* sorting stuff */
+
+	$desc = isset($_GET['d']);
 
 	$fradx=(isset($_GET['fr'])&&!$desc?"&d":"");
 	$ctadx=(isset($_GET['ct'])&&!$desc?"&d":"");

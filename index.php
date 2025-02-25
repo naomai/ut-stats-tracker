@@ -301,8 +301,8 @@ if(isset($_GET['serv'])){
 		usort($servstat,'sortser');
 	}
 	
-	if(!isset($_GET['d'])) {
-		array_reverse($servstat);
+	if($desc) {
+		$servstat = array_reverse($servstat);
 	}
 	
 	$servstatallsize=count($servstat);

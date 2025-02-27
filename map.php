@@ -349,19 +349,19 @@
 			}
 		}
 		
-		$installedOn = indexaskey($msh,'serverid');
+		$installedOn = indexaskey($msh,'server_id');
 		if(count($installedOn)){
 			echo "<h3>".__("Available on %1\$s servers",count($installedOn)).":</h3>\n";
 			
 			$pt=new TableThing($installedOn,"map-".$mapid."-installedOn");
 			$pt->htmlClass="mapInstalledOn semihuge";
 			$pt->htmlId="map-".$mapid."-installedOn";
-			$pt->htmlIdColumn="serverid";
+			$pt->htmlIdColumn="server_id";
 			$pt->dataLastUpdated=$lastscan;
 			$pt->dontCache=true;
 			
 			$pt->setRowPreprocessorCallback(function($r)use($pt){
-				if($r['address']=="") {
+				if($r['address_game']=="") {
 					$pt->skipRow();
 					return null;
 				}
@@ -371,10 +371,9 @@
 				}else{
 					$cif="";
 				}
-				$r['serverNameH']="<a href=\"".maklink(LSERVER,$r['serverid'],$r['name'])."\">$cif".htmlspecialchars($r['name'])."</a>";
-				$addressChunks = explode(":",$r['address']);
-				$r['addressH']=$addressChunks[0] . ":" . ((int)$addressChunks[1]-1);
-				$r['dateH']=niceDate($r['date']);
+				$r['serverNameH']="<a href=\"".maklink(LSERVER,$r['server_id'],$r['name'])."\">$cif".htmlspecialchars($r['name'])."</a>";
+				$r['addressH']=$r['address_game'];
+				$r['dateH']=niceDate($r['start_time']);
 				
 				return $r;
 			});

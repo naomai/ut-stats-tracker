@@ -361,7 +361,12 @@
          * @param int $d Unix timestamp of date to be formatted
          * @return string The formatted date
          */
-	function niceDate($d){
+	function niceDate(int|DateTimeInterface|string $d){
+		if($d instanceof DateTimeInterface){
+			$d = (int)$d->format("U");
+		}else if(!is_int($d)){
+			$d = strtotime($d);
+		}
 		if($d > time() - 3600) return sprintf(__("%1\$d min. ago"),floor((time()-$d)/60));
 		else if($d > time() - dssm()) return sprintf(__("Today, %1\$s"),date("G:i",$d));
 		else if($d > time() - dssm()-86400) return sprintf(__("Yesterday, %1\$s"),date("G:i",$d));
@@ -383,11 +388,11 @@
          * @param float $hours Number of hours
          * @return string The formatted time interval
          */
-	function formattime($hours){
+	function formattime(float $hours){
 		//return ($hours<1 ? "&lt; 1 h":((floor($hours)>=24)?floor($hours/24)." d ":"").(floor($hours)%24)." h");
 		//return ((floor($hours)>=24)?floor($hours/24)." d ":"").($hours>=1?(floor($hours)%24)." h ":"") . (floor($hours*60)%60) ." min";
 		return 	((floor($hours)>=720) ? floor($hours/720)." mo " : "").
-				((floor($hours)>=24) ? (($hours/24)%30)." d " : "").
+				((floor($hours)>=24) ? (round($hours/24)%30)." d " : "").
 				($hours>=1&&$hours<24*5 ? (floor($hours)%24)." h " : "") . 
 				($hours < 2 && $hours>=0 ? (floor($hours*60)%60) ." min" : "").
 				($hours < 0  ? "[UTT_ACHTUNG!Corrupted timespan]" : ""); // < 2016-03-20 

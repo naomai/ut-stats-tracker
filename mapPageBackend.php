@@ -226,7 +226,10 @@ class UTT_MapInfo{
 				$this->dbMapInfo['zone_count'] == $this->zoneCount;
 	}
 	
-	public function findSimilarMaps(){
+	public function findSimilarMaps() {
+		if(!$this->hasReport) {
+			return [];
+		}
 		$sql = "SELECT * FROM mapinfo WHERE 
 			bound_size_x <> 0 AND (
 			bound_size_x BETWEEN :sizeXF AND :sizeXC OR

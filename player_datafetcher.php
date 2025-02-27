@@ -14,19 +14,19 @@
 	$pid=(int)$_GET['id'];
 	$ctype=$_GET['ctype'];
 
-	$pi=sqlquery("SELECT * FROM playerinfo WHERE id=$pid LIMIT 1",1);	
+	$pi=sqlquery("SELECT * FROM players WHERE id=$pid LIMIT 1",1);	
 	
 	$tables = sqlquery("SHOW TABLES",null,null,PDO::FETCH_BOTH);
 	
-	$phTables = array_filter($tables, function($v){return strpos($v[0],"playerhistory")===0;});
+	$phTables = array_filter($tables, function($v){return strpos($v[0],"player_logs")===0;});
 	
 	$ph = array();
 	
-	$ps=sqlquery("SELECT * FROM playerstats WHERE playerid=$pid");	
+	$ps=sqlquery("SELECT * FROM player_stats WHERE player_id=$pid");	
 	
 	foreach($phTables as $table){
 		$tableName = $table[0];
-		$phX=sqlquery("SELECT * FROM `$tableName` WHERE id=$pid ORDER BY gameid ASC");	
+		$phX=sqlquery("SELECT * FROM `$tableName` WHERE player_id=$pid ORDER BY match_id ASC");	
 		$ph = array_merge($ph,$phX);
 	}
 	
@@ -37,32 +37,32 @@
 		$result['error']['message']='Playerid '.$pid.' not found';
 	}else{
 		$pname=$pi['name'];
-		$pskin=$pi['skindata'];
+		$pskin=$pi['skin_data'];
 		
 		$result['status']=200;			
 		$result["description"]="The following is the data collected by UTTracker for player {$pname}";
 		$result["explain"]['id']="abs ( crc32 ( strtolower ( \"{$pname}|\" . ( name_is_complicated ( \"{$pname}\" ) ? \"3456\" : strtok ( \"{$pskin}\", \"|\" ) ) ) ) );";
-		$result["explain"]['serverid']="abs ( crc32 ( \$server_ip ) ); // \$server_ip = ip with ut query port (game port+1)";
-		$result["explain"]['recordid']="abs ( crc32 ( {$pid} ) ^ crc32 ( \$gameId ) );";
+		$result["explain"]['server_id']="abs ( crc32 ( \$server_ip ) ); // \$server_ip = ip with ut query port (game port+1)";
+		//$result["explain"]['recordid']="abs ( crc32 ( {$pid} ) ^ crc32 ( \$gameId ) );";
 		$result["explain"]['name_is_complicated']="strlen ( \"{$pname}|\" ) >= 10 || strpbrk( \"{$pname}|\", '[](){}<>~`!@#$%^&*-=_/;:\'\",.?' ) !== false;";
 		//$result["sqlhistory"]="$sqlqueries";
 
 		
-		$result['playerinfo']=$pi;
-		$result['playerhistory']=$ph;
-		$result['playerstats']=$ps;
+		$result['players']=$pi;
+		$result['player_logs']=$ph;
+		$result['player_stats']=$ps;
 	}
 	
 	
 	
 	$code="";
 	if($ctype=="json") {
-		header("Content-type: text/plain");
-		$code=json_encode($result,JSON_PRETTY_PRINT);
+		header("Content-type: application/json");
+		$code=json_encode($result);
 	}else if($ctype=="xml") {
 		header("Content-type: text/xml");
 		
-		$code="<"."?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/css\" href=\"$assetsPath/rawxml.css\"?>\n";
+		$code="<"."?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"$assetsPath/playerinfo.xsl\"?>\n";
 		
 		$code.="<playerdata>\n";
 		$code.="<description>{$result['description']}</description>\n";
@@ -78,43 +78,44 @@
 			$code.="<$pk>".htmlspecialchars($px)."</$pk>\n";
 		}
 		$code.="</explain>\n";
-		$code.="<playerinfo>\n";
-		foreach($result['playerinfo'] as $pk=>$px){
+		$code.="<players>\n";
+		foreach($result['players'] as $pk=>$px){
 			$code.="<$pk>".htmlspecialchars($px)."</$pk>\n";
 		}
-		$code.="</playerinfo>\n";
-		$code.="<playerhistory>\n";
-		$row1=reset($result['playerhistory']);
+		$code.="</players>\n";
+		$code.="<player_logs>\n";
+		$row1=reset($result['player_logs']);
 		$code.="<header>";
 		foreach($row1 as $pxk=>$pxx){
 			$code.="<column>".htmlspecialchars($pxk)."</column>\n";
 		}
 		$code.="</header>";
 		
-		foreach($result['playerhistory'] as $pk=>$px){
+		foreach($result['player_logs'] as $pk=>$px){
 			$code.="<record>\n";
-			foreach($result['playerhistory'][$pk] as $pxk=>$pxx){
-				$code.="<$pxk>".htmlspecialchars($pxx)."</$pxk>\n";
+			foreach($result['player_logs'][$pk] as $pxk=>$pxx){
+				 
+				$code.="<$pxk>".htmlspecialchars((string)$pxx)."</$pxk>\n";
 			}
 			$code.="</record>\n";
 		}
-		$code.="</playerhistory>\n";
-		$code.="<playerstats>\n";
-		$row1=reset($result['playerstats']);
+		$code.="</player_logs>\n";
+		$code.="<player_stats>\n";
+		$row1=reset($result['player_stats']);
 		$code.="<header>";
 		foreach($row1 as $pxk=>$pxx){
 			$code.="<column>".htmlspecialchars($pxk)."</column>\n";
 		}
 		$code.="</header>";
 		
-		foreach($result['playerstats'] as $pk=>$px){
+		foreach($result['player_stats'] as $pk=>$px){
 			$code.="<record>\n";
-			foreach($result['playerstats'][$pk] as $pxk=>$pxx){
+			foreach($result['player_stats'][$pk] as $pxk=>$pxx){
 				$code.="<$pxk>".htmlspecialchars($pxx)."</$pxk>\n";
 			}
 			$code.="</record>\n";
 		}
-		$code.="</playerstats>\n";
+		$code.="</player_stats>\n";
 		$code.="</playerdata>\n";
 		
 		/*$xm = new XmlDomConstruct('1.0', 'utf-8');
